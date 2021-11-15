@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Patterns;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
+import com.example.chatapp.databinding.ActivitySignUpBinding;
 import com.example.chatapp.databinding.ActivitySignupProfileBinding;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
@@ -37,7 +39,10 @@ public class SignupProfileActivity extends AppCompatActivity implements AdapterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup_profile);
+
+        binding = ActivitySignupProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
 
         Spinner spinner = (Spinner) findViewById(R.id.statusSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -45,6 +50,9 @@ public class SignupProfileActivity extends AppCompatActivity implements AdapterV
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        setListeners();
     }
 
 
@@ -58,6 +66,27 @@ public class SignupProfileActivity extends AppCompatActivity implements AdapterV
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    private void setListeners() {
+       // binding..setOnClickListener(v -> onBackPressed());
+
+
+        binding.buttonSignUpProfile.setOnClickListener(v -> {
+            if (isValidSignUpProfileDetails())
+                signUpProfile();
+        });
+
+        binding.layoutImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            pickImage.launch(intent);
+        });
+
+    }
+
+
+
+
 
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -125,7 +154,7 @@ public class SignupProfileActivity extends AppCompatActivity implements AdapterV
 
     private Boolean isValidSignUpProfileDetails() {
         if (binding.inputDescription.getText().toString().trim().isEmpty()) {
-            binding.inputDescription.setText("I am anonymous");
+            binding.inputDescription.setText("");
         }
         if (encodedImage == null) {
             showToast("Select profile image");
@@ -139,10 +168,10 @@ public class SignupProfileActivity extends AppCompatActivity implements AdapterV
 
     private void loading(Boolean isLoading) {
         if (isLoading) {
-            binding.buttonSignUp.setVisibility(View.INVISIBLE);
+            binding.buttonSignUpProfile.setVisibility(View.INVISIBLE);
             binding.progressBar.setVisibility(View.VISIBLE);
         } else {
-            binding.buttonSignUp.setVisibility(View.VISIBLE);
+            binding.buttonSignUpProfile.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
     }

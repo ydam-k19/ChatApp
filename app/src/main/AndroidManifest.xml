@@ -30,6 +30,9 @@
             android:name=".activities.MainActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".activities.SignupProfileActivity"
+            android:exported="true" />
         <service
             android:name=".firebase.MessagingService"
             android:exported="false">
