@@ -9,4 +9,6 @@ public class Constants {
     public static String KEY_IS_SIGNED_IN = "isSignedIn";
     public static String KEY_USER_ID = "userId";
     public static String KEY_IMAGE = "image";
+    public static String KEY_DESCRIPTION="description";
+    public static String KEY_STATUS="status";
 }

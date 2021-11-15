@@ -10,4 +10,13 @@
     <string name="name">Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_up_profile">Profile</string>
+    <string name="description">description</string>
+    <string name="completeSignupProfile">complete</string>
+    <string name="activities">activities</string>
+    <string-array name="status">
+        <item>available</item>
+        <item>busy</item>
+        <item>offline</item>
+    </string-array>
 </resources>
