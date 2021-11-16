@@ -15,6 +15,7 @@
     <string name="completeSignupProfile">complete</string>
     <string name="activities">activities</string>
     <string name="type_a_message">Type a message</string>
+    <string name="select_user">select User</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>
