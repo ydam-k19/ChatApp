@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatApp">
         <activity
+            android:name=".activities.UserActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.SignUpActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
