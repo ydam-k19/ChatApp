@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ChatApp">
         <activity
             android:name=".activities.ChatActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.UserActivity"
             android:exported="true" />
