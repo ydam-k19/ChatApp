@@ -8,5 +8,5 @@
     <color name="input_background">#fff</color>
     <color name="icon_background">#20ffffff</color>
     <color name="error">#b00020</color>
-    <color name="received_message_background">#090d16</color>
+    <color name="received_message_background">#F7F7F9</color>
 </resources>
