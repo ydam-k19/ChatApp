@@ -18,7 +18,9 @@
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/activity_signup_profile.xml" value="0.2" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_received_message.xml" value="0.67" />
+        <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_recent_conversion.xml" value="0.24259259259259258" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_sent_message.xml" value="0.20092592592592592" />
+        <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_user.xml" value="0.24259259259259258" />
       </map>
     </option>
   </component>
