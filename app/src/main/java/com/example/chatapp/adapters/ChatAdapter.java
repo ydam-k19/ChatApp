@@ -31,7 +31,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType==VIEW_TYPE_SENT) {
+        if (viewType == VIEW_TYPE_SENT) {
             return new SentMessageViewHolder(
                     ItemContainerSentMessageBinding.inflate(
                             LayoutInflater.from(parent.getContext()),
@@ -39,8 +39,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             false
                     )
             );
-        }
-        else{
+        } else {
             return new ReceiverMessageViewHolder(
                     ItemContainerReceivedMessageBinding.inflate(
                             LayoutInflater.from(parent.getContext()),
@@ -53,11 +52,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(getItemViewType(position)==VIEW_TYPE_SENT){
-            ((SentMessageViewHolder)holder).setData(chatMessages.get(position));
-        }
-        else{
-            ((ReceiverMessageViewHolder)holder).setData(chatMessages.get(position),receiverProfileImage);
+        if (getItemViewType(position) == VIEW_TYPE_SENT) {
+            ((SentMessageViewHolder) holder).setData(chatMessages.get(position));
+        } else {
+            ((ReceiverMessageViewHolder) holder).setData(chatMessages.get(position), receiverProfileImage);
         }
     }
 
@@ -68,10 +66,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(chatMessages.get(position).senderId.equals(senderId)){
+        if (chatMessages.get(position).senderId.equals(senderId)) {
             return VIEW_TYPE_SENT;
-        }
-        else{
+        } else {
             return VIEW_TYPE_RECEIVED;
         }
     }
