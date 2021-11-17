@@ -21,8 +21,9 @@ public class Constants {
 
 
 
-    public static String KEY_CONVERSATIONS="conversations";
+    public static String KEY_COLLECTION_CONVERSATIONS="conversations";
     public static String KEY_SENDER_NAME="senderName";
+    public static String KEY_RECEIVER_NAME="receiverName";
     public static String KEY_SENDER_IMAGE="senderImage";
     public static String KEY_RECEIVER_IMAGE="receiverImage";
     public static String KEY_LAST_MESSAGE="lastMessage";

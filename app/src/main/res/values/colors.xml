@@ -2,8 +2,8 @@
 <resources>
     <color name="primary">#377DFF</color>
     <color name="primary_dark">#142232</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
+    <color name="primary_text">#243443</color>
+    <color name="secondary_text">#AAB0B7</color>
     <color name="white">#fff</color>
     <color name="input_background">#fff</color>
     <color name="icon_background">#20ffffff</color>
