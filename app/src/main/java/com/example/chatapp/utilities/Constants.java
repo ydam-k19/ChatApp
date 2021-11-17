@@ -20,4 +20,11 @@ public class Constants {
     public static final String KEY_TIMESTAMP="timestamp";
 
 
+
+    public static String KEY_CONVERSATIONS="conversations";
+    public static String KEY_SENDER_NAME="senderName";
+    public static String KEY_SENDER_IMAGE="senderImage";
+    public static String KEY_RECEIVER_IMAGE="receiverImage";
+    public static String KEY_LAST_MESSAGE="lastMessage";
+
 }

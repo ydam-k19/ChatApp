@@ -2,7 +2,6 @@ package com.example.chatapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -84,7 +83,6 @@ public class ChatActivity extends AppCompatActivity {
                 .addSnapshotListener(eventListener);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private final EventListener<QuerySnapshot>eventListener=(value, error)->{
         if(error!=null){
             return;
