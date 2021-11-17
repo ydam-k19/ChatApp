@@ -16,6 +16,7 @@
     <string name="activities">activities</string>
     <string name="type_a_message">Type a message</string>
     <string name="select_user">select User</string>
+    <string name="online">Online</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>
