@@ -26,7 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
 
     @Override
     public void onConversionClicked(User user) {
-        Intent intent = new Intent(getApplicationContext(),ChatMessage.class);
+        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
         intent.putExtra(Constants.KEY_USER,user);
         startActivity(intent);
     }
