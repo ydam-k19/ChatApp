@@ -58,7 +58,6 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     }
 
     private void setListeners() {
-
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.addNewChat.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
@@ -145,7 +144,6 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                         preferenceManager.getString(Constants.KEY_USER_ID)
                 );
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
-
                 .addOnFailureListener(e -> showToast("Unable to update token"));
     }
 

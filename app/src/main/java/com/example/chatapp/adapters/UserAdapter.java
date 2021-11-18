@@ -15,7 +15,7 @@ import com.example.chatapp.models.User;
 
 import java.util.List;
 
-public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private final List<User> users;
     private final UserListener userListener;
@@ -28,7 +28,7 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemContainerUserBinding itemContainerUserBinding=ItemContainerUserBinding.inflate(
+        ItemContainerUserBinding itemContainerUserBinding = ItemContainerUserBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
@@ -46,15 +46,15 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         return users.size();
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder{
+    class UserViewHolder extends RecyclerView.ViewHolder {
         ItemContainerUserBinding binding;
 
-        UserViewHolder(ItemContainerUserBinding itemContainerUserBinding){
+        UserViewHolder(ItemContainerUserBinding itemContainerUserBinding) {
             super(itemContainerUserBinding.getRoot());
-            binding=itemContainerUserBinding;
+            binding = itemContainerUserBinding;
         }
 
-        void setUserData(User user){
+        void setUserData(User user) {
             binding.textName.setText(user.name);
             binding.textEmail.setText(user.email);
             binding.imageProfile.setImageBitmap(getUserImage(user.image));
@@ -62,8 +62,8 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         }
     }
 
-    private Bitmap getUserImage(String encodedImage){
-        byte[] bytes= Base64.decode(encodedImage,Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+    private Bitmap getUserImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }
