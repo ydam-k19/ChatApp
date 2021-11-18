@@ -47,45 +47,45 @@ import retrofit2.Response;
 
 public class ChatActivity extends BaseActivity {
 
-    private ActivityChatBinding binding;
-    private User receiverUser;
-    private List<ChatMessage> chatMessages;
-    private ChatAdapter chatAdapter;
-    private PreferenceManager preferenceManager;
-    private FirebaseFirestore database;
-    private String conversionId = null;
-    private Boolean isReceiverAvailable=false;
+    private ActivityChatBinding binding;      // generated from XML file
+    private User receiverUser;                // user receiver message
+    private List<ChatMessage> chatMessages;   //list messages have been sent to each other
+    private ChatAdapter chatAdapter;          // Adapter pattern to bind with recyclerView
+    private PreferenceManager preferenceManager; // hold the state
+    private FirebaseFirestore database;         //connection to firebase database
+    private String conversionId = null;         // last message id
+    private Boolean isReceiverAvailable=false;  // online or offline status
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setListeners();
-        loadReceiverDetails();
-        init();
-        listenMessages();
+        setListeners();         // listen to event changed in the screen application
+        loadReceiverDetails();  //load conservations before
+        init();                 // message conversation not loaded
+        listenMessages();       // get messages from database
     }
 
     private void init() {
         preferenceManager = new PreferenceManager(getApplicationContext());
-        chatMessages = new ArrayList<>();
+        chatMessages = new ArrayList<>();       // init List chatMessage
         chatAdapter = new ChatAdapter(
                 chatMessages,
                 getBitmapFromEncodedString(receiverUser.image),
                 preferenceManager.getString(Constants.KEY_USER_ID)
         );
         binding.chatRecyclerView.setAdapter(chatAdapter);
-        database = FirebaseFirestore.getInstance();
+        database = FirebaseFirestore.getInstance();  //open connection , ready for transactions or retrieve data
     }
 
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
-        message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-        message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
-        message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
-        message.put(Constants.KEY_TIMESTAMP, new Date());
-        database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
+        message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID)); // KEY_USER_ID = user that logging in system =user sender
+        message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);     // id of user received message
+        message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString()); // get data from message input and convert to String
+        message.put(Constants.KEY_TIMESTAMP, new Date()); // set time send message
+        database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
 
         if (conversionId != null) {
             updateConversion(binding.inputMessage.getText().toString());
@@ -102,7 +102,7 @@ public class ChatActivity extends BaseActivity {
             addConversion(conversion);
 
         }
-        if(!isReceiverAvailable){
+        if(!isReceiverAvailable){ // if the receiver is offline-> send notifications
             try{
                 JSONArray tokens=new JSONArray();
                 tokens.put(receiverUser.token);
@@ -207,8 +207,9 @@ public class ChatActivity extends BaseActivity {
                 .addSnapshotListener(eventListener);
     }
 
+
     private final EventListener<QuerySnapshot> eventListener = (value, error) -> {
-        if (error != null) {
+        if (error != null) { // if system get error-> break
             return;
         }
         if (value != null) {
@@ -227,6 +228,7 @@ public class ChatActivity extends BaseActivity {
             }
 
             Collections.sort(chatMessages,(obj1,obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
+
             if (count == 0) {
                 chatAdapter.notifyDataSetChanged();
             } else {
@@ -273,7 +275,7 @@ public class ChatActivity extends BaseActivity {
 
     private void updateConversion(String message) {
         DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId);
+                database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId); // return document
         documentReference.update(
                 Constants.KEY_LAST_MESSAGE, message,
                 Constants.KEY_TIMESTAMP, new Date()

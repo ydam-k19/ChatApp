@@ -19,8 +19,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private  Bitmap receiverProfileImage;
     private final String senderId;
 
-    private static final int VIEW_TYPE_SENT = 1;
-    private static final int VIEW_TYPE_RECEIVED = 2;
+    // user has 2 state is receive and send
+    private static final int VIEW_TYPE_SENT = 1;  // when user sends message to the other one
+    private static final int VIEW_TYPE_RECEIVED = 2; // when user receives message from the other one
 
     public void setReceiverProfileImage(Bitmap bitmap){
         receiverProfileImage=bitmap;
@@ -36,6 +37,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_SENT) {
+            // create a holder for adapter to binding
             return new SentMessageViewHolder(
                     ItemContainerSentMessageBinding.inflate(
                             LayoutInflater.from(parent.getContext()),
@@ -69,7 +71,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position) {  // check position belong to sender or receiver
         if (chatMessages.get(position).senderId.equals(senderId)) {
             return VIEW_TYPE_SENT;
         } else {
@@ -79,7 +81,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static class SentMessageViewHolder extends RecyclerView.ViewHolder {
 
-        private final ItemContainerSentMessageBinding binding;
+        private final ItemContainerSentMessageBinding binding; // generated from XML
 
         SentMessageViewHolder(ItemContainerSentMessageBinding itemContainerSentMessageBinding) {
             super(itemContainerSentMessageBinding.getRoot());
@@ -103,6 +105,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
+            // because receiver has avatar while chatting so we must set avatar
             if(receiverProfileImage!=null){
                 binding.imageProfile.setImageBitmap(receiverProfileImage);
             }
