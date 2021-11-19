@@ -213,7 +213,7 @@ public class ChatActivity extends BaseActivity {
             return;
         }
         if (value != null) {
-            int count = chatMessages.size();
+            int count = chatMessages.size();  // =0
 
             for (DocumentChange documentChange : value.getDocumentChanges()) {
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
@@ -225,7 +225,7 @@ public class ChatActivity extends BaseActivity {
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     chatMessages.add(chatMessage);
                 }
-            }
+            } //=10
 
             Collections.sort(chatMessages,(obj1,obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
 
