@@ -18,6 +18,7 @@
     <string name="select_user">select User</string>
     <string name="online">Online</string>
     <string name="adding_button_fab">adding button fab</string>
+    <string name="share_location">Share location</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>

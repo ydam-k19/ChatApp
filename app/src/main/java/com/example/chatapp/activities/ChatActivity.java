@@ -116,7 +116,8 @@ public class ChatActivity extends BaseActivity {
         fab_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChatActivity.this,"click location",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+                pickLocation.launch(intent);
             }
         });
 
@@ -163,7 +164,6 @@ public class ChatActivity extends BaseActivity {
         previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes,Base64.DEFAULT);
-
     }
 
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
@@ -184,6 +184,18 @@ public class ChatActivity extends BaseActivity {
                 }
             }
     );
+
+    private final ActivityResultLauncher<Intent> pickLocation = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK){
+                    if(result.getData()!=null){
+                        encodedImage = result.getData().getStringExtra("IMAGE_LOCATION");
+                    }
+                }
+            }
+    );
+
 
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
