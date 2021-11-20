@@ -1,7 +1,11 @@
 package com.example.chatapp.adapters;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,6 +21,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ChatMessage> chatMessages;
     private  Bitmap receiverProfileImage;
+
     private final String senderId;
 
     // user has 2 state is receive and send
@@ -89,8 +94,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setData(ChatMessage chatMessage) {
-            binding.textMessage.setText(chatMessage.message);
-            binding.textDateTime.setText(chatMessage.dateTime);
+
+            if(!chatMessage.image.equals("empty Image")){
+                binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.imageMessage.setVisibility(View.VISIBLE);
+                binding.textMessage.setVisibility(View.GONE);
+              //  binding.textDateTime.setText(chatMessage.dateTime);
+            }else{
+                binding.textMessage.setText(chatMessage.message);
+                binding.textDateTime.setText(chatMessage.dateTime);
+                binding.imageMessage.setVisibility(View.GONE);
+            }
+
         }
     }
 
@@ -103,13 +118,29 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
-            binding.textMessage.setText(chatMessage.message);
-            binding.textDateTime.setText(chatMessage.dateTime);
+
+            if(!chatMessage.image.equals("empty Image")){
+                binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.imageMessage.setVisibility(View.VISIBLE);
+                binding.textMessage.setVisibility(View.GONE);
+                //binding.textDateTime.setText(chatMessage.dateTime);
+            }else{
+                binding.textMessage.setText(chatMessage.message);
+                binding.textDateTime.setText(chatMessage.dateTime);
+                binding.imageMessage.setVisibility(View.GONE);
+            }
+
+
             // because receiver has avatar while chatting so we must set avatar
             if(receiverProfileImage!=null){
                 binding.imageProfile.setImageBitmap(receiverProfileImage);
             }
 
         }
+    }
+
+    private static Bitmap getMessageImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }

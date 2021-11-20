@@ -3,6 +3,10 @@ package com.example.chatapp.utilities;
 import java.util.HashMap;
 
 public class Constants {
+    public static final String KEY_CHAT_ID="chatId";
+    public static final String KEY_TYPE="type";
+
+
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
@@ -20,6 +24,7 @@ public class Constants {
     public static final String KEY_RECEIVER_ID="receiverId";
     public static final String KEY_MESSAGE="message";
     public static final String KEY_TIMESTAMP="timestamp";
+    public static final String KEY_MESSAGE_IMAGE="messageImage";
 
 
 
@@ -42,6 +47,7 @@ public class Constants {
     public static HashMap<String,String>getRemoteMsgHeaders(){
         if(remoteMsgHeaders==null){
             remoteMsgHeaders=new HashMap<>();
+
             remoteMsgHeaders.put(
                     REMOTE_MSG_AUTHORIZATION,
                     "key=AAAAOLr2Uks:APA91bFCQqMTZOELEPtLihJMlK5MTGkxNdFug7Sn_RR3hMyUOkHB4-lG-8Ns6HY8BIYJV3_bCvERP9eSoBeqaOB_x4CtTxtVVtge7Ra7vIlpQ71rUnRXxsCRuKiAFINzAW7I-iLsn5I_"

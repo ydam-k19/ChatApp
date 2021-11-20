@@ -61,6 +61,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
+    // FirebaseUI Storage
+    implementation 'com.firebaseui:firebase-ui-storage:3.1.3'
+
+
+
     // google map
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
 }

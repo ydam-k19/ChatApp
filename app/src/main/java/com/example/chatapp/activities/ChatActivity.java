@@ -1,16 +1,23 @@
 package com.example.chatapp.activities;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
+import com.example.chatapp.R;
 import com.example.chatapp.adapters.ChatAdapter;
 import com.example.chatapp.databinding.ActivityChatBinding;
 import com.example.chatapp.models.ChatMessage;
@@ -20,6 +27,7 @@ import com.example.chatapp.network.ApiService;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,6 +39,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -56,6 +67,12 @@ public class ChatActivity extends BaseActivity {
     private String conversionId = null;         // last message id
     private Boolean isReceiverAvailable=false;  // online or offline status
 
+    private String encodedImage="empty Image";
+
+
+    FloatingActionButton fab_add,fab_img,fab_location;
+    Animation fabOpen,fabClose,rotateForward,rotateBackward;
+    boolean isOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +82,64 @@ public class ChatActivity extends BaseActivity {
         loadReceiverDetails();  //load conservations before
         init();                 // message conversation not loaded
         listenMessages();       // get messages from database
+
+        //animations
+        fab_add=(FloatingActionButton) findViewById(R.id.fab_adding);
+        fab_img=(FloatingActionButton) findViewById(R.id.fab_img);
+        fab_location=(FloatingActionButton) findViewById(R.id.fab_location);
+
+        fabOpen= AnimationUtils.loadAnimation(this,R.anim.fab_open);
+        fabClose=AnimationUtils.loadAnimation(this,R.anim.fab_close);
+
+        rotateForward=AnimationUtils.loadAnimation(this,R.anim.rotate_forward);
+        rotateBackward=AnimationUtils.loadAnimation(this,R.anim.rotate_backward);
+
+        // set click listener
+        fab_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+            }
+        });
+
+        fab_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                pickImage.launch(intent);
+                Toast.makeText(ChatActivity.this,"click fab img after config",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fab_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ChatActivity.this,"click location",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+
+    private void animateFab(){
+        if(isOpen){
+            fab_add.startAnimation(rotateForward);
+            fab_img.startAnimation(fabClose);
+            fab_location.startAnimation(fabClose);
+            fab_img.setClickable(false);
+            fab_location.setClickable(false);
+            isOpen=false;
+        }else{
+            fab_add.startAnimation(rotateBackward);
+            fab_img.startAnimation(fabOpen);
+            fab_location.startAnimation(fabOpen);
+            fab_img.setClickable(true);
+            fab_location.setClickable(true);
+            isOpen=true;
+        }
     }
 
     private void init() {
@@ -79,12 +154,48 @@ public class ChatActivity extends BaseActivity {
         database = FirebaseFirestore.getInstance();  //open connection , ready for transactions or retrieve data
     }
 
+
+    private String encodeImage(Bitmap bitmap) {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
+        ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes,Base64.DEFAULT);
+
+    }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK){
+                    if(result.getData()!=null){
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            encodedImage = encodeImage(bitmap); // !null
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID)); // KEY_USER_ID = user that logging in system =user sender
         message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);     // id of user received message
         message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString()); // get data from message input and convert to String
         message.put(Constants.KEY_TIMESTAMP, new Date()); // set time send message
+        if(encodedImage.equals("empty Image"))
+            message.put(Constants.KEY_MESSAGE_IMAGE,"empty Image");
+        else
+            message.put(Constants.KEY_MESSAGE_IMAGE,encodedImage);
+
         database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
 
         if (conversionId != null) {
@@ -222,6 +333,11 @@ public class ChatActivity extends BaseActivity {
                     chatMessage.receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
                     chatMessage.message = documentChange.getDocument().getString(Constants.KEY_MESSAGE);
                     chatMessage.dateTime = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP));
+                    if(!documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE).equals("empty Image"))
+                        chatMessage.image=documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE);
+                    else
+                        chatMessage.image="empty Image";
+
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     chatMessages.add(chatMessage);
                 }
@@ -245,7 +361,7 @@ public class ChatActivity extends BaseActivity {
     };
 
     private Bitmap getBitmapFromEncodedString(String encodedImage) {
-        if(encodedImage!=null){
+        if(!encodedImage.equals("empty Image")){
             byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         }
@@ -315,4 +431,7 @@ public class ChatActivity extends BaseActivity {
         super.onResume();
         listenAbilityOfReceiver();
     }
+
+
+
 }

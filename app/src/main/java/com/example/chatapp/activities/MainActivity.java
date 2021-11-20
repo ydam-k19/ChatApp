@@ -17,6 +17,7 @@ import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -51,10 +52,16 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     }
 
     private void init() {
+
         conversations = new ArrayList<>();
         conversationsAdapter = new RecentConversationsAdapter(conversations,this);
         binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
         database = FirebaseFirestore.getInstance();
+    }
+
+    private void initChatId(){
+        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+        preferenceManager.putString(Constants.KEY_CHAT_ID,firebaseAuth.getUid());
     }
 
     private void setListeners() {
