@@ -35,19 +35,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.75"/>
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageMessage"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="@dimen/_4sdp"
         android:layout_marginLeft="@dimen/_4sdp"
-        android:background="@drawable/background_received_message"
-        android:paddingStart="@dimen/_12sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_12sdp"
-        android:paddingBottom="@dimen/_8sdp"
+        app:shapeAppearanceOverlay="@style/roundImageReceivedMessage"
         android:visibility="invisible"/>
 
     <TextView

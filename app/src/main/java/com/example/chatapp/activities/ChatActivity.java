@@ -156,7 +156,7 @@ public class ChatActivity extends BaseActivity {
 
 
     private String encodeImage(Bitmap bitmap) {
-        int previewWidth = 150;
+        int previewWidth = 500;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
         ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
