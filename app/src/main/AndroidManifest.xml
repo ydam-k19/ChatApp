@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatApp">
         <activity
+            android:name=".activities.MapDirectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MapsActivity"
             android:exported="false" />
         <activity

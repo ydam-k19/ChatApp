@@ -8,8 +8,6 @@ android {
 
     defaultConfig {
         applicationId "com.example.chatapp"
-        minSdk 21
-        targetSdk 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -69,4 +67,8 @@ dependencies {
     // google map
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
     implementation "com.google.android.gms:play-services-location:18.0.0"
+
+    // mapbox
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
+    implementation 'com.mapbox.maps:android:10.1.0'
 }

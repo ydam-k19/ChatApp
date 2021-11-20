@@ -1,21 +1,26 @@
 package com.example.chatapp.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.chatapp.R;
-import com.example.chatapp.databinding.ActivityMapsBinding;
+import com.example.chatapp.databinding.ActivityMapDirectionBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,23 +31,33 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.io.ByteArrayOutputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.ArrayList;
+
+public class MapDirectionActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int REQUEST_PERMISSION_CODE = 123;
     private GoogleMap mMap;
-    private ActivityMapsBinding binding;
+    private ActivityMapDirectionBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
+    private Marker mkStart, mkDest;
+    private Polyline route;
 
+    private final String API_URL_TEMP = "https://api.mapbox.com/directions/v5/mapbox/driving/%s,%s;%s,%s?" +
+            "annotations=maxspeed&overview=full&geometries=geojson&access_token=%s";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        binding = ActivityMapDirectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -61,25 +76,83 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         updateLastLocation();
+        requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
 
-
-        binding.shareButton.setOnClickListener(new View.OnClickListener() {
+        binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                    @Override
-                    public void onSnapshotReady(@Nullable Bitmap bitmap) {
-                        if (bitmap != null) {
-                            Intent intent = new Intent(MapsActivity.this, ChatActivity.class);
-                            intent.putExtra("IMAGE_LOCATION", encodeImage(bitmap));
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    }
-                });
+                finish();
             }
         });
     }
+
+
+
+    private void drawRoute(ArrayList<LatLng> points) {
+        if (points.size() < 1) return;
+
+        mkDest = mMap.addMarker(new MarkerOptions()
+                .position(points.get(points.size() - 1))
+        );
+
+        route = mMap.addPolyline(new PolylineOptions()
+                .addAll(points)
+                .color(Color.RED)
+        );
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void requestDirection(LatLng start, LatLng dest) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = String.format(API_URL_TEMP,
+                start.longitude, start.latitude,
+                dest.longitude, dest.latitude,
+                this.getString(R.string.mapbox_access_token));
+        Log.d("@@@ url", url);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("@@@ response", response);
+                        ArrayList<LatLng> points = parseJsonResult(start, dest, response);
+                        drawRoute(points);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("@@@ error", error.toString());
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    private ArrayList<LatLng> parseJsonResult(LatLng start, LatLng dest, String response) {
+        ArrayList<LatLng> points = new ArrayList<>();
+
+        try {
+
+            JSONObject jsonResult = new JSONObject(response);
+            JSONArray jsonPoints = jsonResult.getJSONArray("routes")
+                    .getJSONObject(0)
+                    .getJSONObject("geometry")
+                    .getJSONArray("coordinates");
+
+            for (int i = 0; i < jsonPoints.length(); i++) {
+                JSONArray tmp = jsonPoints.getJSONArray(i);
+                double lat = tmp.getDouble(1);
+                double lng = tmp.getDouble(0);
+                points.add(new LatLng(lat, lng));
+            }
+
+            points.add(0, start);
+            points.add(dest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return points;
+    }
+
 
     private void updateLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -126,14 +199,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return marker;
     }
 
-    private String encodeImage(Bitmap bitmap) {
-        int previewWidth = 500;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-        byte[] bytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
-    }
 
 }

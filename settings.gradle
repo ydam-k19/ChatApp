@@ -4,6 +4,20 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                // Do not change the username below.
+                // This should always be `mapbox` (not your username).
+                username = 'mapbox'
+                // Use the secret token you stored in gradle.properties as the password
+                password = "sk.eyJ1IjoieWRhbSIsImEiOiJja3c3ZGJiOW4wNHE2MndsZnpqM29zaWZhIn0.mc_YBUi-uEu3R4nNfmQt7g"
+            }
+        }
     }
 }
 rootProject.name = "ChatApp"

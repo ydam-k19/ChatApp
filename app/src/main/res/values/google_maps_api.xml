@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAxblrM8bAG-gL8mGJN3vg12pVhtzYqkVQ</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoieWRhbSIsImEiOiJja3c3NzhkeHgxNjZrMzBvMDgwb2hkM2ZpIn0.yVNic8mj3S1PDcvkJDLAww</string>
 </resources>
