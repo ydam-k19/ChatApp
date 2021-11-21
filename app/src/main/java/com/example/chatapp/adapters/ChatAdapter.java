@@ -163,6 +163,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
                 binding.imageMessage.setVisibility(View.GONE);
+                binding.textMessage.setVisibility(View.VISIBLE);
             }
 
         }
@@ -190,6 +191,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
                 binding.imageMessage.setVisibility(View.GONE);
+                binding.textMessage.setVisibility(View.VISIBLE);
             }
         // because receiver has avatar while chatting so we must set avatar
             if(receiverProfileImage!=null){

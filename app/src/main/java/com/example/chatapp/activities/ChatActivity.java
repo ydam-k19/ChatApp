@@ -114,17 +114,21 @@ public class ChatActivity extends BaseActivity {
         fab_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 pickImage.launch(intent);
-                Toast.makeText(ChatActivity.this,"click fab img after config",Toast.LENGTH_SHORT).show();
+
+                animateFab();
+
             }
         });
 
         fab_location.setOnClickListener(view -> {
+
             Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
             pickLocation.launch(intent);
+
+            animateFab();
         });
     }
 
@@ -424,7 +428,10 @@ public class ChatActivity extends BaseActivity {
 
     private void setListeners() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        binding.send.setOnClickListener(v -> sendMessage());
+        binding.send.setOnClickListener(v -> {
+//            if(!binding.inputMessage.getText().toString().isEmpty())
+                sendMessage();
+        });
 
         binding.inputMessage.setOnFocusChangeListener((v, hasFocus) -> {
             binding.layoutSend.setBackgroundResource(R.drawable.background_chat_input_on_focus);
@@ -437,7 +444,9 @@ public class ChatActivity extends BaseActivity {
         });
 
         binding.inputMessage.setOnEditorActionListener((v, actionId, event) -> {
-            if(actionId == EditorInfo.IME_ACTION_DONE){
+            if(actionId == EditorInfo.IME_ACTION_DONE ){
+                //            if(!binding.inputMessage.getText().toString().isEmpty())
+
                 sendMessage();
                 return true;
             }
