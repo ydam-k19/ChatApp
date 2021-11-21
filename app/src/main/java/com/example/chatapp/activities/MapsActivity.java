@@ -94,8 +94,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Location location = task.getResult();
-                addMarkerOnMap(location);
+                lastLocation = task.getResult();
+                addMarkerOnMap(lastLocation);
             }
         });
     }
@@ -116,13 +116,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(position);
+
         Marker marker = mMap.addMarker(markerOptions);
+
         CameraPosition point = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))
                 .zoom(16)
                 .tilt(30)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(point));
+
         return marker;
     }
 

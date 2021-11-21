@@ -1,5 +1,6 @@
 package com.example.chatapp.adapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
