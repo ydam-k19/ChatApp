@@ -53,12 +53,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private Polyline route;
     private String senderId;
 
+
     private final String API_URL_TEMP = "https://api.mapbox.com/directions/v5/mapbox/driving/%s,%s;%s,%s?" +
             "annotations=maxspeed&overview=full&geometries=geojson&access_token=%s";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         binding = ActivityMapDirectionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -73,10 +75,18 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Intent intent=getIntent();
         senderId=intent.getStringExtra("senderId");
+        String receiveId=intent.getStringExtra("receiverId");
         String lat=intent.getStringExtra("senderLatitude");
-        String lng=intent.getStringExtra("receiverLongitude");
+        String lng=intent.getStringExtra("senderLongitude");
+        Log.d("lattude mapDirection get",lat);
+        Log.d("longittued map Direction get",lng);
+
+        senderLocation=new Location("");
         senderLocation.setLatitude(Double.parseDouble(lat));
         senderLocation.setLongitude(Double.parseDouble(lng));
+
+        receiverLocation=new Location("");
+
 
         binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +107,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
         updateLastLocation();
        // requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
-        requestDirection(new LatLng(receiverLocation.getLatitude(),receiverLocation.getLongitude()), new LatLng(senderLocation.getLatitude(),senderLocation.getLongitude()));
 
         binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +146,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     public void onResponse(String response) {
                         Log.d("@@@ response", response);
                         ArrayList<LatLng> points = parseJsonResult(start, dest, response);
+                        Log.d("startinggggggggg",start.toString());
+                        Log.d("destingggggggggggg",dest.toString());
                         drawRoute(points);
                     }
                 }, new Response.ErrorListener() {
@@ -189,9 +200,11 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Location location = task.getResult();
-                receiverLocation.setLatitude(location.getLatitude());
-                receiverLocation.setLongitude(location.getLongitude());
-                addMarkerOnMap(location);
+                receiverLocation=location;
+                addMarkerOnMap(senderLocation);
+                addMarkerOnMap(receiverLocation);
+                requestDirection(new LatLng(receiverLocation.getLatitude(),receiverLocation.getLongitude()), new LatLng(senderLocation.getLatitude(),senderLocation.getLongitude()));
+
             }
         });
     }

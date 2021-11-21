@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +88,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
                         intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
                         intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
-                        intent.putExtra("receiverLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
                         context.startActivity(intent);
-
-
+                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
+                        Log.d("senderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
                     }
                 });
             }
@@ -105,8 +108,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
                         intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
                         intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
-                        intent.putExtra("receiverLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
                         context.startActivity(intent);
+                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
+                        Log.d("SenderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
                     }
                 });
             }
