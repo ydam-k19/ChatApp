@@ -5,24 +5,22 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.chatapp.activities.MapDirectionActivity;
 import com.example.chatapp.databinding.ItemContainerReceivedMessageBinding;
 import com.example.chatapp.databinding.ItemContainerSentMessageBinding;
 import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.utilities.Constants;
+import com.example.chatapp.utilities.PreferenceManager;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -31,6 +29,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Bitmap receiverProfileImage;
     private final android.content.Context context;
     private TextView lastClickLayout;
+    private PreferenceManager preferenceManager;
 
 
     private final String senderId;
@@ -50,9 +49,19 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.context = context;
         this.senderId = senderId;
         lastClickLayout = null;
+        preferenceManager = new PreferenceManager(context);
 
     }
 
+    private String encodeImage(Bitmap bitmap) {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
 
     @NonNull
     @Override
@@ -91,6 +100,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         intent.putExtra(Constants.KEY_RECEIVER_ID, chatMessages.get(holder.getAdapterPosition()).receiverId);
                         intent.putExtra(Constants.KEY_SENDER_LATITUDE, chatMessages.get(holder.getAdapterPosition()).lat);
                         intent.putExtra(Constants.KEY_SENDER_LONGITUDE, chatMessages.get(holder.getAdapterPosition()).lng);
+
+                        intent.putExtra(Constants.KEY_RECEIVER_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
                         context.startActivity(intent);
                     }
                 });
@@ -120,6 +131,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         intent.putExtra(Constants.KEY_RECEIVER_ID, chatMessages.get(holder.getAdapterPosition()).receiverId);
                         intent.putExtra(Constants.KEY_SENDER_LATITUDE, chatMessages.get(holder.getAdapterPosition()).lat);
                         intent.putExtra(Constants.KEY_SENDER_LONGITUDE, chatMessages.get(holder.getAdapterPosition()).lng);
+
+                        intent.putExtra(Constants.KEY_RECEIVER_IMAGE, encodeImage(receiverProfileImage));
                         context.startActivity(intent);
                     }
                 });
@@ -129,6 +142,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     public void onClick(View v) {
                         if (lastClickLayout != null) {
                             lastClickLayout.setVisibility(View.GONE);
+
                         }
                         ((ReceiverMessageViewHolder) holder).binding.textDateTime.setVisibility(View.VISIBLE);
                         lastClickLayout = ((ReceiverMessageViewHolder) holder).binding.textDateTime;

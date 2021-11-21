@@ -1,10 +1,5 @@
 package com.example.chatapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +8,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityMapsBinding;

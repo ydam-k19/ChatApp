@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.ChatApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/primary</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primary_dark</item>
     </style>
     <style name="roundImageReceivedMessage" parent="">
         <item name="cornerFamily">rounded</item>

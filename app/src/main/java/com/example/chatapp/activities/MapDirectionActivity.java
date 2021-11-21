@@ -1,18 +1,25 @@
 package com.example.chatapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,14 +30,17 @@ import com.android.volley.toolbox.Volley;
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityMapDirectionBinding;
 import com.example.chatapp.utilities.Constants;
+import com.example.chatapp.utilities.PreferenceManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -53,7 +63,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private Marker mkStart, mkDest;
     private Polyline route;
     private String senderId;
-
+    Bitmap receiverProfileImage;
+    PreferenceManager preferenceManager;
 
     private final String API_URL_TEMP = "https://api.mapbox.com/directions/v5/mapbox/driving/%s,%s;%s,%s?" +
             "annotations=maxspeed&overview=full&geometries=geojson&access_token=%s";
@@ -61,6 +72,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
 
         binding = ActivityMapDirectionBinding.inflate(getLayoutInflater());
@@ -74,24 +87,27 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        Intent intent=getIntent();
-        senderId=intent.getStringExtra(Constants.KEY_SENDER_ID);
-        String receiveId=intent.getStringExtra(Constants.KEY_RECEIVER_ID);
-        String lat=intent.getStringExtra(Constants.KEY_SENDER_LATITUDE);
-        String lng=intent.getStringExtra(Constants.KEY_SENDER_LONGITUDE);
+        Intent intent = getIntent();
+        senderId = intent.getStringExtra(Constants.KEY_SENDER_ID);
+        String receiveId = intent.getStringExtra(Constants.KEY_RECEIVER_ID);
+        String lat = intent.getStringExtra(Constants.KEY_SENDER_LATITUDE);
+        String lng = intent.getStringExtra(Constants.KEY_SENDER_LONGITUDE);
+        String receiverProfileString = intent.getStringExtra(Constants.KEY_RECEIVER_IMAGE);
 
-        senderLocation=new Location("");
+        receiverProfileImage = getUserImage(receiverProfileString);
+
+
+        senderLocation = new Location("");
         senderLocation.setLatitude(Double.parseDouble(lat));
         senderLocation.setLongitude(Double.parseDouble(lng));
-
-        receiverLocation=new Location("");
+        receiverLocation = new Location("");
 
 
         binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentChat=new Intent(MapDirectionActivity.this,ChatActivity.class);
-                setResult(RESULT_OK,intentChat);
+                Intent intentChat = new Intent(MapDirectionActivity.this, ChatActivity.class);
+                setResult(RESULT_OK, intentChat);
                 finish();
 
             }
@@ -105,7 +121,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         mMap = googleMap;
 
         updateLastLocation();
-       // requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
+        // requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
 
         binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,13 +132,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     }
 
 
-
     private void drawRoute(ArrayList<LatLng> points) {
         if (points.size() < 1) return;
-
-        mkDest = mMap.addMarker(new MarkerOptions()
-                .position(points.get(points.size() - 1))
-        );
 
         route = mMap.addPolyline(new PolylineOptions()
                 .addAll(points)
@@ -145,8 +156,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     public void onResponse(String response) {
                         Log.d("@@@ response", response);
                         ArrayList<LatLng> points = parseJsonResult(start, dest, response);
-                        Log.d("startinggggggggg",start.toString());
-                        Log.d("destingggggggggggg",dest.toString());
                         drawRoute(points);
                     }
                 }, new Response.ErrorListener() {
@@ -199,11 +208,12 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Location location = task.getResult();
-                receiverLocation=location;
-                addMarkerOnMap(senderLocation);
-                addMarkerOnMap(receiverLocation);
-                requestDirection(new LatLng(receiverLocation.getLatitude(),receiverLocation.getLongitude()), new LatLng(senderLocation.getLatitude(),senderLocation.getLongitude()));
-
+                receiverLocation = location;
+                preferenceManager.getString(Constants.KEY_IMAGE);
+                mkStart = addMarkerOnMap(senderLocation, getUserImage(preferenceManager.getString(Constants.KEY_IMAGE)));
+                mkDest = addMarkerOnMap(receiverLocation, receiverProfileImage);
+                requestDirection(new LatLng(receiverLocation.getLatitude(), receiverLocation.getLongitude()), new LatLng(senderLocation.getLatitude(), senderLocation.getLongitude()));
+                moveCamera();
             }
         });
     }
@@ -220,18 +230,75 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         }
     }
 
-    private Marker addMarkerOnMap(Location location) {
+    private Marker addMarkerOnMap(Location location, Bitmap userImage) {
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(position);
+                .position(position)
+                .icon(BitmapDescriptorFactory.fromBitmap(userImage));
         Marker marker = mMap.addMarker(markerOptions);
-        CameraPosition point = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(16)
-                .tilt(30)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(point));
         return marker;
+    }
+
+//
+//    private void setCamera() {
+//        CameraPosition point = new CameraPosition.Builder()
+//                .target(new LatLng(senderLocation.getLatitude(), senderLocation.getLongitude()))
+//                .zoom(16)
+//                .tilt(30)
+//                .build();
+//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(point));
+//    }
+
+    private void moveCamera() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        builder.include(mkStart.getPosition());
+        builder.include(mkDest.getPosition());
+
+        LatLngBounds bounds = builder.build();
+
+        int padding = 0; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,150);
+
+
+        mMap.animateCamera(cu);
+
+    }
+
+
+    private Bitmap getUserImage(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap imageView = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        return getCircularBitmapWithWhiteBorder(imageView, 10);
+    }
+
+
+    @SuppressLint("ResourceAsColor")
+    public static Bitmap getCircularBitmapWithWhiteBorder(Bitmap bitmap,
+                                                          int borderWidth) {
+        if (bitmap == null || bitmap.isRecycled()) {
+            return null;
+        }
+
+        final int width = bitmap.getWidth() + borderWidth;
+        final int height = bitmap.getHeight() + borderWidth;
+
+        Bitmap canvasBitmap = Bitmap.createBitmap(width, height + borderWidth * 3, Bitmap.Config.ARGB_8888);
+        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(shader);
+
+        Canvas canvas = new Canvas(canvasBitmap);
+        float radius = width > height ? ((float) height) / 2f : ((float) width) / 2f;
+        canvas.drawCircle(width / 2, height / 2, radius, paint);
+        paint.setShader(null);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(R.color.primary);
+        paint.setStrokeWidth(borderWidth);
+        canvas.drawCircle(width / 2, height / 2, radius - borderWidth / 2, paint);
+        return canvasBitmap;
     }
 
 }

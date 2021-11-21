@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#7E25A5</color>
-    <color name="primary_dark">#142232</color>
+    <color name="primary_dark">#6A1D8C</color>
     <color name="primary_text">#243443</color>
     <color name="secondary_text">#AAB0B7</color>
     <color name="white">#fff</color>
@@ -10,4 +10,5 @@
     <color name="error">#b00020</color>
     <color name="received_message_background">#F7F7F9</color>
     <color name="green">#008000</color>
+    <color name="chat_background">#dfe0e4</color>
 </resources>
