@@ -73,7 +73,7 @@ public class ChatActivity extends BaseActivity {
 
 
     FloatingActionButton fab_add,fab_img,fab_location;
-    Animation fabOpen,fabClose,rotateForward,rotateBackward;
+    Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean isOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +86,15 @@ public class ChatActivity extends BaseActivity {
         listenMessages();       // get messages from database
 
         //animations
-        fab_add=(FloatingActionButton) findViewById(R.id.fab_adding);
-        fab_img=(FloatingActionButton) findViewById(R.id.fab_img);
-        fab_location=(FloatingActionButton) findViewById(R.id.fab_location);
+        fab_add=binding.fabAdding;
+        fab_img=binding.fabImg;
+        fab_location=binding.fabLocation;
 
-        fabOpen= AnimationUtils.loadAnimation(this,R.anim.fab_open);
-        fabClose=AnimationUtils.loadAnimation(this,R.anim.fab_close);
+        rotateOpen = AnimationUtils.loadAnimation(this,R.anim.rotate_open);
+        rotateClose =AnimationUtils.loadAnimation(this,R.anim.rotate_close);
 
-        rotateForward=AnimationUtils.loadAnimation(this,R.anim.rotate_forward);
-        rotateBackward=AnimationUtils.loadAnimation(this,R.anim.rotate_backward);
+        fromBottom =AnimationUtils.loadAnimation(this,R.anim.from_bottom);
+        toBottom =AnimationUtils.loadAnimation(this,R.anim.to_bottom);
 
         // set click listener
         fab_add.setOnClickListener(new View.OnClickListener() {
@@ -126,20 +126,24 @@ public class ChatActivity extends BaseActivity {
 
 
     private void animateFab(){
-        if(isOpen){
-            fab_add.startAnimation(rotateForward);
-            fab_img.startAnimation(fabClose);
-            fab_location.startAnimation(fabClose);
+        if(!isOpen){
+            fab_add.startAnimation(rotateOpen);
+            fab_img.startAnimation(fromBottom);
+            fab_location.startAnimation(fromBottom);
             fab_img.setClickable(false);
             fab_location.setClickable(false);
-            isOpen=false;
+            fab_img.setVisibility(View.VISIBLE);
+            fab_location.setVisibility(View.VISIBLE);
+            isOpen=true;
         }else{
-            fab_add.startAnimation(rotateBackward);
-            fab_img.startAnimation(fabOpen);
-            fab_location.startAnimation(fabOpen);
+            fab_add.startAnimation(rotateClose);
+            fab_img.startAnimation(toBottom);
+            fab_location.startAnimation(toBottom);
             fab_img.setClickable(true);
             fab_location.setClickable(true);
-            isOpen=true;
+            fab_img.setVisibility(View.INVISIBLE);
+            fab_location.setVisibility(View.INVISIBLE);
+            isOpen=false;
         }
     }
 

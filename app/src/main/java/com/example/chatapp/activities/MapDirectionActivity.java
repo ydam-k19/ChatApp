@@ -200,5 +200,4 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         return marker;
     }
 
-
 }
