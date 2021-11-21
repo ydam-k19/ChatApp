@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         if (getItemViewType(position) == VIEW_TYPE_SENT) {
             ((SentMessageViewHolder) holder).setData(chatMessages.get(position));
             if(chatMessages.get(position).isMap){
@@ -83,9 +85,15 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View view) {
                         Intent intent=new Intent(context,MapDirectionActivity.class);
-
-                        //ke
-
+                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        context.startActivity(intent);
+                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
+                        Log.d("senderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
                     }
                 });
             }
@@ -96,7 +104,16 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((ReceiverMessageViewHolder) holder).binding.imageMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Intent intent=new Intent(context,MapDirectionActivity.class);
+                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        context.startActivity(intent);
+                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
+                        Log.d("SenderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
                     }
                 });
             }
