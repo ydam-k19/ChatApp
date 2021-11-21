@@ -84,7 +84,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     public void onClick(View view) {
                         Intent intent=new Intent(context,MapDirectionActivity.class);
 
-
+                        //ke
 
                     }
                 });
