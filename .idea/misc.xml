@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21145833333333333" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable/background_chat_input.xml" value="0.16574074074074074" />
+        <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable/background_chat_input_on_focus.xml" value="0.37864583333333335" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable/background_content_bottom.xml" value="0.37447916666666664" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable/background_content_top.xml" value="0.16574074074074074" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/drawable/background_icon.xml" value="0.1648148148148148" />
@@ -25,7 +26,7 @@
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/activity_signup_profile.xml" value="0.2" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/activity_user.xml" value="0.2" />
-        <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_received_message.xml" value="0.9" />
+        <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_received_message.xml" value="0.67" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_recent_conversion.xml" value="0.24259259259259258" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_sent_message.xml" value="0.33" />
         <entry key="..\:/project/AndroidStudioProjects/practice/ChatApp/app/src/main/res/layout/item_container_user.xml" value="0.24259259259259258" />
