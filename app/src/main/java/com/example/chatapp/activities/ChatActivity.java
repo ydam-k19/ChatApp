@@ -72,16 +72,17 @@ public class ChatActivity extends BaseActivity {
     private PreferenceManager preferenceManager; // hold the state
     private FirebaseFirestore database;         //connection to firebase database
     private String conversionId = null;         // last message id
-    private Boolean isReceiverAvailable=false;  // online or offline status
+    private Boolean isReceiverAvailable = false;  // online or offline status
 
-    private String encodedImage="empty Image";
-    private String lat="empty latitude";
-    private String lng="empty longitude";
+    private String encodedImage = "";
+    private String lat = "";
+    private String lng = "";
 
 
-    FloatingActionButton fab_add,fab_img,fab_location;
+    FloatingActionButton fab_add, fab_img, fab_location;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
-    boolean isOpen=false;
+    boolean isOpen = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,15 +94,15 @@ public class ChatActivity extends BaseActivity {
         listenMessages();       // get messages from database
 
         //animations
-        fab_add=binding.fabAdding;
-        fab_img=binding.fabImg;
-        fab_location=binding.fabLocation;
+        fab_add = binding.fabAdding;
+        fab_img = binding.fabImg;
+        fab_location = binding.fabLocation;
 
-        rotateOpen = AnimationUtils.loadAnimation(this,R.anim.rotate_open);
-        rotateClose =AnimationUtils.loadAnimation(this,R.anim.rotate_close);
+        rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
+        rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close);
 
-        fromBottom =AnimationUtils.loadAnimation(this,R.anim.from_bottom);
-        toBottom =AnimationUtils.loadAnimation(this,R.anim.to_bottom);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom);
+        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom);
 
         // set click listener
         fab_add.setOnClickListener(new View.OnClickListener() {
@@ -130,11 +131,13 @@ public class ChatActivity extends BaseActivity {
 
             animateFab();
         });
+
+
     }
 
 
-    private void animateFab(){
-        if(!isOpen){
+    private void animateFab() {
+        if (!isOpen) {
             fab_add.startAnimation(rotateOpen);
             fab_img.startAnimation(fromBottom);
             fab_location.startAnimation(fromBottom);
@@ -142,8 +145,8 @@ public class ChatActivity extends BaseActivity {
             fab_location.setClickable(true);
             fab_img.setVisibility(View.VISIBLE);
             fab_location.setVisibility(View.VISIBLE);
-            isOpen=true;
-        }else{
+            isOpen = true;
+        } else {
             fab_add.startAnimation(rotateClose);
             fab_img.startAnimation(toBottom);
             fab_location.startAnimation(toBottom);
@@ -151,7 +154,7 @@ public class ChatActivity extends BaseActivity {
             fab_location.setClickable(false);
             fab_img.setVisibility(View.INVISIBLE);
             fab_location.setVisibility(View.INVISIBLE);
-            isOpen=false;
+            isOpen = false;
         }
     }
 
@@ -172,23 +175,27 @@ public class ChatActivity extends BaseActivity {
     private String encodeImage(Bitmap bitmap) {
         int previewWidth = 500;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
-        ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes,Base64.DEFAULT);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if(result.getResultCode() == RESULT_OK){
-                    if(result.getData()!=null){
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
                         Uri imageUri = result.getData().getData();
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(imageUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             encodedImage = encodeImage(bitmap); // !null
+
+
+                            binding.imagePreview.setImageBitmap(bitmap);
+                            binding.imagePreviewLayout.setVisibility(View.VISIBLE);
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -201,11 +208,14 @@ public class ChatActivity extends BaseActivity {
     private final ActivityResultLauncher<Intent> pickLocation = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if(result.getResultCode() == RESULT_OK){
-                    if(result.getData()!=null){
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
                         encodedImage = result.getData().getStringExtra("IMAGE_LOCATION");
-                        lat=result.getData().getStringExtra("SENDER_LATITUDE");
-                        lng=result.getData().getStringExtra("SENDER_LONGITUDE");
+                        lat = result.getData().getStringExtra("SENDER_LATITUDE");
+                        lng = result.getData().getStringExtra("SENDER_LONGITUDE");
+
+                        sendMessage();
+
                     }
                 }
             }
@@ -213,30 +223,30 @@ public class ChatActivity extends BaseActivity {
 
 
     private void sendMessage() {
+
+
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID)); // KEY_USER_ID = user that logging in system =user sender
         message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);     // id of user received message
         message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString()); // get data from message input and convert to String
         message.put(Constants.KEY_TIMESTAMP, new Date()); // set time send message
-        if(encodedImage.equals("empty Image"))
-            message.put(Constants.KEY_MESSAGE_IMAGE,"empty Image");
+        if (encodedImage.isEmpty())
+            message.put(Constants.KEY_MESSAGE_IMAGE, "");
         else
-            message.put(Constants.KEY_MESSAGE_IMAGE,encodedImage);
+            message.put(Constants.KEY_MESSAGE_IMAGE, encodedImage);
         //set latitude
-        if(lat.equals("empty latitude")&&lng.equals("empty longitude"))
-        {
-            message.put(Constants.KEY_LONGITUDE,"empty longitude");
-            message.put(Constants.KEY_LATITUDE,"empty latitude");
-            message.put(Constants.KEY_IS_MAP,false);
-        }
-        else{
-            message.put(Constants.KEY_LATITUDE,lat);
-            message.put(Constants.KEY_LONGITUDE,lng);
-            message.put(Constants.KEY_IS_MAP,true);
+        if (lat.isEmpty() && lng.isEmpty()) {
+            message.put(Constants.KEY_LONGITUDE, "");
+            message.put(Constants.KEY_LATITUDE, "");
+            message.put(Constants.KEY_IS_MAP, false);
+        } else {
+            message.put(Constants.KEY_LATITUDE, lat);
+            message.put(Constants.KEY_LONGITUDE, lng);
+            message.put(Constants.KEY_IS_MAP, true);
 
         }
         database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
-        encodedImage="empty Image";
+        encodedImage = "";
         if (conversionId != null) {
             updateConversion(binding.inputMessage.getText().toString());
         } else {
@@ -252,94 +262,95 @@ public class ChatActivity extends BaseActivity {
             addConversion(conversion);
 
         }
-        if(!isReceiverAvailable){ // if the receiver is offline-> send notifications
-            try{
-                JSONArray tokens=new JSONArray();
+        if (!isReceiverAvailable) { // if the receiver is offline-> send notifications
+            try {
+                JSONArray tokens = new JSONArray();
                 tokens.put(receiverUser.token);
 
-                JSONObject data=new JSONObject();
-                data.put(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID));
-                data.put(Constants.KEY_NAME,preferenceManager.getString(Constants.KEY_NAME));
-                data.put(Constants.KEY_FCM_TOKEN,preferenceManager.getString(Constants.KEY_FCM_TOKEN));
-                data.put(Constants.KEY_MESSAGE,binding.inputMessage.getText().toString());
+                JSONObject data = new JSONObject();
+                data.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                data.put(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
+                data.put(Constants.KEY_FCM_TOKEN, preferenceManager.getString(Constants.KEY_FCM_TOKEN));
+                data.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
 
-                JSONObject body=new JSONObject();
-                body.put(Constants.REMOTE_MSG_DATA,data);
-                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS,tokens);
+                JSONObject body = new JSONObject();
+                body.put(Constants.REMOTE_MSG_DATA, data);
+                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
 
                 sendNotification(body.toString());
 
-            }catch (Exception exception){
+            } catch (Exception exception) {
                 showToast(exception.getMessage());
             }
         }
         binding.inputMessage.setText(null);
-
+        binding.imagePreviewLayout.setVisibility(View.GONE);
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void sendNotification(String messageBody){
+    private void sendNotification(String messageBody) {
         ApiClient.getClient().create(ApiService.class).sendMessage(
                 Constants.getRemoteMsgHeaders(),
                 messageBody
         ).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(@NonNull Call<String> call,@NonNull Response<String> response) {
-                if(response.isSuccessful()){
-                    try{
-                        if(response.body()!=null){
-                            JSONObject responseJson=new JSONObject(response.body());
-                            JSONArray results=responseJson.getJSONArray("results");
-                            if(responseJson.getInt("failure")==1){
-                                JSONObject error=(JSONObject) results.get(0);
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body() != null) {
+                            JSONObject responseJson = new JSONObject(response.body());
+                            JSONArray results = responseJson.getJSONArray("results");
+                            if (responseJson.getInt("failure") == 1) {
+                                JSONObject error = (JSONObject) results.get(0);
                                 showToast(error.getString("error"));
                                 return;
                             }
                         }
 
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                }else {
-                    showToast("Error: "+response.code());
+                } else {
+                    showToast("Error: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<String> call,@NonNull Throwable t) {
-                    showToast(t.getMessage());
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                showToast(t.getMessage());
             }
         });
     }
 
-    private void listenAbilityOfReceiver(){
+    private void listenAbilityOfReceiver() {
         database.collection(Constants.KEY_COLLECTION_USERS).document(
                 receiverUser.id
-        ).addSnapshotListener(ChatActivity.this,(value,error)->{
-            if(error!=null){
+        ).addSnapshotListener(ChatActivity.this, (value, error) -> {
+            if (error != null) {
                 return;
             }
-            if(value!=null) {
+            if (value != null) {
                 if (value.getLong(Constants.KEY_AVAILABILITY) != null) {
-                    int availability= Objects.requireNonNull(
+                    int availability = Objects.requireNonNull(
                             value.getLong(Constants.KEY_AVAILABILITY)
                     ).intValue();
-                    isReceiverAvailable=availability==1;  // check conditions
+                    isReceiverAvailable = availability == 1;  // check conditions
                 }
-                receiverUser.token=value.getString(Constants.KEY_FCM_TOKEN);
-                if(receiverUser.image==null){
-                    receiverUser.image=value.getString(Constants.KEY_IMAGE);
+                receiverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
+                if (receiverUser.image == null) {
+                    receiverUser.image = value.getString(Constants.KEY_IMAGE);
                     chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(receiverUser.image));
-                    chatAdapter.notifyItemRangeChanged(0,chatMessages.size());
+                    chatAdapter.notifyItemRangeChanged(0, chatMessages.size());
+
                 }
             }
-            if(isReceiverAvailable){
+            if (isReceiverAvailable) {
                 binding.textAvailability.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 binding.textAvailability.setVisibility(View.GONE);
             }
 
@@ -372,22 +383,22 @@ public class ChatActivity extends BaseActivity {
                     chatMessage.receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
                     chatMessage.message = documentChange.getDocument().getString(Constants.KEY_MESSAGE);
                     chatMessage.dateTime = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP));
-                    if(!documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE).equals("empty Image"))
-                        chatMessage.image=documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE);
+                    if (!documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE).isEmpty())
+                        chatMessage.image = documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE);
                     else
-                        chatMessage.image="empty Image";
+                        chatMessage.image = "";
 
-                    if(!documentChange.getDocument().getString(Constants.KEY_LATITUDE).equals("empty latitude"))
-                        chatMessage.lat=documentChange.getDocument().getString(Constants.KEY_LATITUDE);
+                    if (!documentChange.getDocument().getString(Constants.KEY_LATITUDE).isEmpty())
+                        chatMessage.lat = documentChange.getDocument().getString(Constants.KEY_LATITUDE);
                     else
-                        chatMessage.lat="empty latitude";
+                        chatMessage.lat = "";
 
-                    if(!documentChange.getDocument().getString(Constants.KEY_LONGITUDE).equals("empty longitude"))
-                        chatMessage.lng=documentChange.getDocument().getString(Constants.KEY_LONGITUDE);
+                    if (!documentChange.getDocument().getString(Constants.KEY_LONGITUDE).isEmpty())
+                        chatMessage.lng = documentChange.getDocument().getString(Constants.KEY_LONGITUDE);
                     else
-                        chatMessage.lng="empty longitude";
+                        chatMessage.lng = "";
 
-                   chatMessage.isMap=documentChange.getDocument().getBoolean(Constants.KEY_IS_MAP);
+                    chatMessage.isMap = documentChange.getDocument().getBoolean(Constants.KEY_IS_MAP);
 
 
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
@@ -395,7 +406,7 @@ public class ChatActivity extends BaseActivity {
                 }
             } //=10
 
-            Collections.sort(chatMessages,(obj1,obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
+            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
 
             if (count == 0) {
                 chatAdapter.notifyDataSetChanged();
@@ -413,7 +424,7 @@ public class ChatActivity extends BaseActivity {
     };
 
     private Bitmap getBitmapFromEncodedString(String encodedImage) {
-        if(!encodedImage.equals("empty Image")){
+        if (!encodedImage.isEmpty()) {
             byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         }
@@ -430,7 +441,13 @@ public class ChatActivity extends BaseActivity {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
         binding.send.setOnClickListener(v -> {
 //            if(!binding.inputMessage.getText().toString().isEmpty())
-                sendMessage();
+            sendMessage();
+        });
+
+        binding.removeImagePreview.setOnClickListener(v -> {
+            encodedImage = "";
+            binding.imagePreview.setImageBitmap(null);
+            binding.imagePreviewLayout.setVisibility(View.GONE);
         });
 
         binding.inputMessage.setOnFocusChangeListener((v, hasFocus) -> {
@@ -444,7 +461,7 @@ public class ChatActivity extends BaseActivity {
         });
 
         binding.inputMessage.setOnEditorActionListener((v, actionId, event) -> {
-            if(actionId == EditorInfo.IME_ACTION_DONE ){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 //            if(!binding.inputMessage.getText().toString().isEmpty())
 
                 sendMessage();
@@ -453,12 +470,13 @@ public class ChatActivity extends BaseActivity {
             return false;
         });
     }
-//    clear focus on touch outside editText
+
+    //    clear focus on touch outside editText
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
 
@@ -467,14 +485,14 @@ public class ChatActivity extends BaseActivity {
                 icon.getGlobalVisibleRect(iconRect);
 
                 outRect.right += iconRect.right - outRect.left;
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
 
     private String getReadableDateTime(Date date) {
@@ -529,7 +547,6 @@ public class ChatActivity extends BaseActivity {
         super.onResume();
         listenAbilityOfReceiver();
     }
-
 
 
 }

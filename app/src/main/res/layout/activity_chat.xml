@@ -14,13 +14,13 @@
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/background_content_top"
-        app:layout_constraintBottom_toTopOf="@id/layoutSend"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/viewSupporterTwo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        app:layout_constraintVertical_bias="0.0"
-        android:focusable="true" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/headerBackground"
@@ -49,7 +49,6 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
         android:padding="@dimen/_4sdp"
         android:src="@drawable/ic_info"
         android:tint="@color/white"
@@ -87,7 +86,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:clickable="true"
         android:clipToPadding="false"
+        android:focusable="true"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="@dimen/_20sdp"
@@ -95,9 +96,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         app:layout_constraintTop_toBottomOf="@id/viewSupporter"
-        android:clickable="true"
-        app:stackFromEnd="true"
-        android:focusable="true" />
+        app:stackFromEnd="true" />
 
 
     <ProgressBar
@@ -112,96 +111,141 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_adding"
-        app:fabCustomSize="@dimen/_40sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_21sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:backgroundTint="@color/primary"
+        android:clickable="true"
         android:contentDescription="@string/adding_button_fab"
+        android:focusable="true"
         android:src="@drawable/ic_add"
         app:borderWidth="0dp"
-        app:tint="@color/white"
+        app:fabCustomSize="@dimen/_40sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true" />
+        app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_img"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
-        app:fabCustomSize="@dimen/_40sdp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_21sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:backgroundTint="@color/white"
-        app:borderWidth="0dp"
-        app:tint="@color/primary"
         android:contentDescription="@string/adding_button_fab"
         android:src="@drawable/ic_img"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_21sdp"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabCustomSize="@dimen/_40sdp"
         app:layout_constraintBottom_toTopOf="@id/fab_adding"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/primary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_location"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_21sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/adding_button_fab"
         android:src="@drawable/ic_location"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabCustomSize="@dimen/_40sdp"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_21sdp"
         app:layout_constraintBottom_toTopOf="@id/fab_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/primary" />
 
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/layoutSend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_21sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/background_chat_input"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fab_adding"
-        app:layout_constraintHorizontal_bias="0.0"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewSupporterTwo"
         app:layout_constraintStart_toStartOf="parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-        <EditText
-            android:id="@+id/inputMessage"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/type_a_message"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:textColor="@color/primary_text"
-            android:textColorHint="@color/secondary_text" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingEnd="@dimen/_60sdp"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imagePreviewLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:padding="@dimen/_8sdp"
-            android:src="@drawable/ic_send"
-            android:tint="@color/secondary_text" />
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_12sdp"
+            app:layout_constraintBottom_toTopOf="@id/layoutSend"
+            app:layout_constraintStart_toStartOf="@id/layoutSend">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="@dimen/_80sdp"
+                android:maxHeight="@dimen/_80sdp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundImagePreview" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/removeImagePreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:src="@drawable/ic_remove"
+                app:layout_constraintEnd_toEndOf="@id/imagePreview"
+                app:layout_constraintTop_toTopOf="@id/imagePreview"
+                app:tint="@color/primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_21sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:background="@drawable/background_chat_input"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+
+            <EditText
+                android:id="@+id/inputMessage"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/type_a_message"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingEnd="@dimen/_16sdp"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/secondary_text" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_send"
+                android:tint="@color/secondary_text" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <TextView
         android:id="@+id/textAvailability"

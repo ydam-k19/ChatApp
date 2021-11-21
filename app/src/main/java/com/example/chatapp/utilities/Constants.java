@@ -30,7 +30,8 @@ public class Constants {
     public static final String KEY_LONGITUDE="longitude";
     public static final String KEY_IS_MAP="isMap";
 
-
+    public static final String KEY_SENDER_LATITUDE="senderLatitude";
+    public static final String KEY_SENDER_LONGITUDE="senderLongitude";
 
     public static final String KEY_COLLECTION_CONVERSATIONS="conversations";
     public static final String KEY_SENDER_NAME="senderName";

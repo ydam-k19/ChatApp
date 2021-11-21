@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -19,15 +21,16 @@ import com.example.chatapp.activities.MapDirectionActivity;
 import com.example.chatapp.databinding.ItemContainerReceivedMessageBinding;
 import com.example.chatapp.databinding.ItemContainerSentMessageBinding;
 import com.example.chatapp.models.ChatMessage;
+import com.example.chatapp.utilities.Constants;
 
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ChatMessage> chatMessages;
-    private  Bitmap receiverProfileImage;
+    private Bitmap receiverProfileImage;
     private final android.content.Context context;
-
+    private TextView lastClickLayout;
 
 
     private final String senderId;
@@ -37,9 +40,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_RECEIVED = 2; // when user receives message from the other one
 
 
-
-    public void setReceiverProfileImage(Bitmap bitmap){
-        receiverProfileImage=bitmap;
+    public void setReceiverProfileImage(Bitmap bitmap) {
+        receiverProfileImage = bitmap;
     }
 
     public ChatAdapter(Context context, List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
@@ -47,10 +49,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.receiverProfileImage = receiverProfileImage;
         this.context = context;
         this.senderId = senderId;
+        lastClickLayout = null;
 
     }
-
-
 
 
     @NonNull
@@ -81,40 +82,57 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (getItemViewType(position) == VIEW_TYPE_SENT) {
             ((SentMessageViewHolder) holder).setData(chatMessages.get(position));
-            if(chatMessages.get(position).isMap){
+            if (chatMessages.get(position).isMap) {
                 ((SentMessageViewHolder) holder).binding.imageMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent=new Intent(context,MapDirectionActivity.class);
-                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
-                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
-                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
-                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        Intent intent = new Intent(context, MapDirectionActivity.class);
+                        intent.putExtra(Constants.KEY_SENDER_ID, chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra(Constants.KEY_RECEIVER_ID, chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra(Constants.KEY_SENDER_LATITUDE, chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra(Constants.KEY_SENDER_LONGITUDE, chatMessages.get(holder.getAdapterPosition()).lng);
                         context.startActivity(intent);
-                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
-                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
-                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
-                        Log.d("senderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
+                    }
+                });
+            } else {
+                ((SentMessageViewHolder) holder).binding.messageLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (lastClickLayout != null) {
+                            lastClickLayout.setVisibility(View.GONE);
+                        }
+
+                        ((SentMessageViewHolder) holder).binding.textDateTime.setVisibility(View.VISIBLE);
+                        lastClickLayout = ((SentMessageViewHolder) holder).binding.textDateTime;
+
                     }
                 });
             }
 
         } else {
             ((ReceiverMessageViewHolder) holder).setData(chatMessages.get(position), receiverProfileImage);
-            if(chatMessages.get(position).isMap){
+            if (chatMessages.get(position).isMap) {
                 ((ReceiverMessageViewHolder) holder).binding.imageMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent=new Intent(context,MapDirectionActivity.class);
-                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
-                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
-                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
-                        intent.putExtra("senderLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        Intent intent = new Intent(context, MapDirectionActivity.class);
+                        intent.putExtra(Constants.KEY_SENDER_ID, chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra(Constants.KEY_RECEIVER_ID, chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra(Constants.KEY_SENDER_LATITUDE, chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra(Constants.KEY_SENDER_LONGITUDE, chatMessages.get(holder.getAdapterPosition()).lng);
                         context.startActivity(intent);
-                        Log.d("senderIddddddddd......",chatMessages.get(holder.getAdapterPosition()).senderId);
-                        Log.d("receiverIdddddd......",chatMessages.get(holder.getAdapterPosition()).receiverId);
-                        Log.d("senderLattide......",chatMessages.get(holder.getAdapterPosition()).lat);
-                        Log.d("SenderLongitude......",chatMessages.get(holder.getAdapterPosition()).lng);
+                    }
+                });
+            } else {
+                ((ReceiverMessageViewHolder) holder).binding.messageLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (lastClickLayout != null) {
+                            lastClickLayout.setVisibility(View.GONE);
+                        }
+                        ((ReceiverMessageViewHolder) holder).binding.textDateTime.setVisibility(View.VISIBLE);
+                        lastClickLayout = ((ReceiverMessageViewHolder) holder).binding.textDateTime;
+
                     }
                 });
             }
@@ -135,7 +153,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-     static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemContainerSentMessageBinding binding; // generated from XML
 
@@ -147,15 +165,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
 
 
-            if(!chatMessage.image.equals("empty Image")){
+            if (!chatMessage.image.isEmpty()) {
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.textDateTime.setText(chatMessage.dateTime);
+
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
-              //  binding.textDateTime.setText(chatMessage.dateTime);
 
-            }else{
+            } else {
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
+
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
             }
@@ -174,23 +194,26 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
 
-            if(!chatMessage.image.equals("empty Image")){
+            if (!chatMessage.image.isEmpty()) {
 
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.textDateTime.setText(chatMessage.dateTime);
+
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
 
 
-            }else{
+            } else {
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
+
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
             }
 
 
             // because receiver has avatar while chatting so we must set avatar
-            if(receiverProfileImage!=null){
+            if (receiverProfileImage != null) {
                 binding.imageProfile.setImageBitmap(receiverProfileImage);
             }
 

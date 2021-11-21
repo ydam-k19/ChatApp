@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityMapDirectionBinding;
+import com.example.chatapp.utilities.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -74,12 +75,10 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Intent intent=getIntent();
-        senderId=intent.getStringExtra("senderId");
-        String receiveId=intent.getStringExtra("receiverId");
-        String lat=intent.getStringExtra("senderLatitude");
-        String lng=intent.getStringExtra("senderLongitude");
-        Log.d("lattude mapDirection get",lat);
-        Log.d("longittued map Direction get",lng);
+        senderId=intent.getStringExtra(Constants.KEY_SENDER_ID);
+        String receiveId=intent.getStringExtra(Constants.KEY_RECEIVER_ID);
+        String lat=intent.getStringExtra(Constants.KEY_SENDER_LATITUDE);
+        String lng=intent.getStringExtra(Constants.KEY_SENDER_LONGITUDE);
 
         senderLocation=new Location("");
         senderLocation.setLatitude(Double.parseDouble(lat));
