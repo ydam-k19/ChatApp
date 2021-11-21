@@ -72,6 +72,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (bitmap != null) {
                             Intent intent = new Intent(MapsActivity.this, ChatActivity.class);
                             intent.putExtra("IMAGE_LOCATION", encodeImage(bitmap));
+                            intent.putExtra("SENDER_LATITUDE",Double.toString(lastLocation.getLatitude()));
+                            intent.putExtra("SENDER_LONGITUDE",Double.toString(lastLocation.getLongitude()));
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -114,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Marker addMarkerOnMap(Location location) {
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+        lastLocation=location;
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(position);
 

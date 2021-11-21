@@ -59,10 +59,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         database = FirebaseFirestore.getInstance();
     }
 
-    private void initChatId(){
-        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-        preferenceManager.putString(Constants.KEY_CHAT_ID,firebaseAuth.getUid());
-    }
+
 
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());

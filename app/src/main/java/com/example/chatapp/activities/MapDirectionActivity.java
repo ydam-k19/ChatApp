@@ -46,7 +46,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private GoogleMap mMap;
     private ActivityMapDirectionBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
-    private Location lastLocation;
+    private Location receiverLocation;
+    private Location senderLocation;
     private Marker mkStart, mkDest;
     private Polyline route;
 

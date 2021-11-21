@@ -14,7 +14,9 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@id/textMessage"
         app:layout_constraintStart_toStartOf="parent"
-        app:riv_oval="true"/>
+        android:clickable="true"
+        app:riv_oval="true"
+        android:focusable="true" />
 
     <TextView
 
