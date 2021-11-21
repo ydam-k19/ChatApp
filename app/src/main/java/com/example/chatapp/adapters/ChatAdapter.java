@@ -1,10 +1,10 @@
 package com.example.chatapp.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +12,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatapp.activities.ChatActivity;
-import com.example.chatapp.activities.MainActivity;
+
 import com.example.chatapp.activities.MapDirectionActivity;
 import com.example.chatapp.databinding.ItemContainerReceivedMessageBinding;
 import com.example.chatapp.databinding.ItemContainerSentMessageBinding;
 import com.example.chatapp.models.ChatMessage;
-import com.google.api.Context;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ChatMessage> chatMessages;
     private  Bitmap receiverProfileImage;
-    private Context context;
+    private final android.content.Context context;
 
 
 
@@ -36,11 +34,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_SENT = 1;  // when user sends message to the other one
     private static final int VIEW_TYPE_RECEIVED = 2; // when user receives message from the other one
 
+
+
     public void setReceiverProfileImage(Bitmap bitmap){
         receiverProfileImage=bitmap;
     }
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, Context context, String senderId) {
+    public ChatAdapter(Context context, List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
         this.chatMessages = chatMessages;
         this.receiverProfileImage = receiverProfileImage;
         this.context = context;
@@ -48,11 +48,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
-        this.chatMessages = chatMessages;
-        this.receiverProfileImage = receiverProfileImage;
-        this.senderId = senderId;
-    }
 
 
 
@@ -88,6 +83,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View view) {
                         Intent intent=new Intent(context,MapDirectionActivity.class);
+
+
 
                     }
                 });

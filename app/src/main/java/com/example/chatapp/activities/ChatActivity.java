@@ -147,6 +147,7 @@ public class ChatActivity extends BaseActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<>();       // init List chatMessage
         chatAdapter = new ChatAdapter(
+                getApplicationContext(),
                 chatMessages,
                 getBitmapFromEncodedString(receiverUser.image),
                 preferenceManager.getString(Constants.KEY_USER_ID)
