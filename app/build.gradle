@@ -70,5 +70,5 @@ dependencies {
 
     // mapbox
     implementation 'com.mcxiaoke.volley:library:1.0.19'
-    implementation 'com.mapbox.maps:android:10.1'
+    implementation 'com.mapbox.maps:android:10.1.0'
 }

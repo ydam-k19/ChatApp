@@ -130,8 +130,8 @@ public class ChatActivity extends BaseActivity {
             fab_add.startAnimation(rotateOpen);
             fab_img.startAnimation(fromBottom);
             fab_location.startAnimation(fromBottom);
-            fab_img.setClickable(false);
-            fab_location.setClickable(false);
+            fab_img.setClickable(true);
+            fab_location.setClickable(true);
             fab_img.setVisibility(View.VISIBLE);
             fab_location.setVisibility(View.VISIBLE);
             isOpen=true;
@@ -139,8 +139,8 @@ public class ChatActivity extends BaseActivity {
             fab_add.startAnimation(rotateClose);
             fab_img.startAnimation(toBottom);
             fab_location.startAnimation(toBottom);
-            fab_img.setClickable(true);
-            fab_location.setClickable(true);
+            fab_img.setClickable(false);
+            fab_location.setClickable(false);
             fab_img.setVisibility(View.INVISIBLE);
             fab_location.setVisibility(View.INVISIBLE);
             isOpen=false;
