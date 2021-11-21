@@ -68,6 +68,8 @@ public class ChatActivity extends BaseActivity {
     private Boolean isReceiverAvailable=false;  // online or offline status
 
     private String encodedImage="empty Image";
+    private String lat="empty latitude";
+    private String lng="empty longitude";
 
 
     FloatingActionButton fab_add,fab_img,fab_location;
@@ -120,10 +122,8 @@ public class ChatActivity extends BaseActivity {
                 pickLocation.launch(intent);
             }
         });
-
-
-
     }
+
 
     private void animateFab(){
         if(isOpen){
@@ -191,6 +191,8 @@ public class ChatActivity extends BaseActivity {
                 if(result.getResultCode() == RESULT_OK){
                     if(result.getData()!=null){
                         encodedImage = result.getData().getStringExtra("IMAGE_LOCATION");
+                        lat=result.getData().getStringExtra("SENDER_LATITUDE");
+                        lng=result.getData().getStringExtra("SENDER_LONGITUDE");
                     }
                 }
             }
@@ -207,7 +209,19 @@ public class ChatActivity extends BaseActivity {
             message.put(Constants.KEY_MESSAGE_IMAGE,"empty Image");
         else
             message.put(Constants.KEY_MESSAGE_IMAGE,encodedImage);
+        //set latitude
+        if(lat.equals("empty latitude")&&lng.equals("empty longitude"))
+        {
+            message.put(Constants.KEY_LONGITUDE,"empty longitude");
+            message.put(Constants.KEY_LATITUDE,"empty latitude");
+            message.put(Constants.KEY_IS_MAP,false);
+        }
+        else{
+            message.put(Constants.KEY_LATITUDE,lat);
+            message.put(Constants.KEY_LONGITUDE,lng);
+            message.put(Constants.KEY_IS_MAP,true);
 
+        }
         database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
 
         if (conversionId != null) {
@@ -349,6 +363,19 @@ public class ChatActivity extends BaseActivity {
                         chatMessage.image=documentChange.getDocument().getString(Constants.KEY_MESSAGE_IMAGE);
                     else
                         chatMessage.image="empty Image";
+
+                    if(!documentChange.getDocument().getString(Constants.KEY_LATITUDE).equals("empty latitude"))
+                        chatMessage.lat=documentChange.getDocument().getString(Constants.KEY_LATITUDE);
+                    else
+                        chatMessage.lat="empty latitude";
+
+                    if(!documentChange.getDocument().getString(Constants.KEY_LONGITUDE).equals("empty longitude"))
+                        chatMessage.lng=documentChange.getDocument().getString(Constants.KEY_LONGITUDE);
+                    else
+                        chatMessage.lng="empty longitude";
+
+                   chatMessage.isMap=documentChange.getDocument().getBoolean(Constants.KEY_IS_MAP);
+
 
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     chatMessages.add(chatMessage);

@@ -26,6 +26,10 @@ public class Constants {
     public static final String KEY_TIMESTAMP="timestamp";
     public static final String KEY_MESSAGE_IMAGE="messageImage";
 
+    public static final String KEY_LATITUDE="latitude";
+    public static final String KEY_LONGITUDE="longitude";
+    public static final String KEY_IS_MAP="isMap";
+
 
 
     public static final String KEY_COLLECTION_CONVERSATIONS="conversations";
