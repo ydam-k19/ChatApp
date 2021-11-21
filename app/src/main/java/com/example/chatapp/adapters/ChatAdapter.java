@@ -76,6 +76,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         if (getItemViewType(position) == VIEW_TYPE_SENT) {
             ((SentMessageViewHolder) holder).setData(chatMessages.get(position));
             if(chatMessages.get(position).isMap){
@@ -83,8 +84,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View view) {
                         Intent intent=new Intent(context,MapDirectionActivity.class);
+                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra("receiverLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        context.startActivity(intent);
 
-                        //ke
 
                     }
                 });
@@ -96,7 +101,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((ReceiverMessageViewHolder) holder).binding.imageMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Intent intent=new Intent(context,MapDirectionActivity.class);
+                        intent.putExtra("senderId",chatMessages.get(holder.getAdapterPosition()).senderId);
+                        intent.putExtra("receiverId",chatMessages.get(holder.getAdapterPosition()).receiverId);
+                        intent.putExtra("senderLatitude",chatMessages.get(holder.getAdapterPosition()).lat);
+                        intent.putExtra("receiverLongitude",chatMessages.get(holder.getAdapterPosition()).lng);
+                        context.startActivity(intent);
                     }
                 });
             }

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -50,6 +51,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private Location senderLocation;
     private Marker mkStart, mkDest;
     private Polyline route;
+    private String senderId;
 
     private final String API_URL_TEMP = "https://api.mapbox.com/directions/v5/mapbox/driving/%s,%s;%s,%s?" +
             "annotations=maxspeed&overview=full&geometries=geojson&access_token=%s";
@@ -69,6 +71,23 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        Intent intent=getIntent();
+        senderId=intent.getStringExtra("senderId");
+        String lat=intent.getStringExtra("senderLatitude");
+        String lng=intent.getStringExtra("receiverLongitude");
+        senderLocation.setLatitude(Double.parseDouble(lat));
+        senderLocation.setLongitude(Double.parseDouble(lng));
+
+        binding.fabEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentChat=new Intent(MapDirectionActivity.this,ChatActivity.class);
+                setResult(RESULT_OK,intentChat);
+                finish();
+
+            }
+        });
+
 
     }
 
@@ -77,7 +96,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         mMap = googleMap;
 
         updateLastLocation();
-        requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
+       // requestDirection(new LatLng(10.762912, 106.682172), new LatLng(10.764958808724096, 106.67821224330648));
+        requestDirection(new LatLng(receiverLocation.getLatitude(),receiverLocation.getLongitude()), new LatLng(senderLocation.getLatitude(),senderLocation.getLongitude()));
 
         binding.fabEnd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +189,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Location location = task.getResult();
+                receiverLocation.setLatitude(location.getLatitude());
+                receiverLocation.setLongitude(location.getLongitude());
                 addMarkerOnMap(location);
             }
         });

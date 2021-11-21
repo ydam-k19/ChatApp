@@ -62,13 +62,11 @@ dependencies {
     // FirebaseUI Storage
     implementation 'com.firebaseui:firebase-ui-storage:3.1.3'
 
-
-
     // google map
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
     implementation "com.google.android.gms:play-services-location:18.0.0"
 
     // mapbox
     implementation 'com.mcxiaoke.volley:library:1.0.19'
-    implementation 'com.mapbox.maps:android:10.1'
+    implementation 'com.mapbox.maps:android:10.1.0'
 }
