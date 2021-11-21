@@ -1,21 +1,28 @@
 package com.example.chatapp.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.chatapp.R;
 import com.example.chatapp.adapters.ChatAdapter;
@@ -115,12 +122,9 @@ public class ChatActivity extends BaseActivity {
             }
         });
 
-        fab_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
-                pickLocation.launch(intent);
-            }
+        fab_location.setOnClickListener(view -> {
+            Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+            pickLocation.launch(intent);
         });
     }
 
@@ -420,7 +424,48 @@ public class ChatActivity extends BaseActivity {
 
     private void setListeners() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        binding.layoutSend.setOnClickListener(v -> sendMessage());
+        binding.send.setOnClickListener(v -> sendMessage());
+
+        binding.inputMessage.setOnFocusChangeListener((v, hasFocus) -> {
+            binding.layoutSend.setBackgroundResource(R.drawable.background_chat_input_on_focus);
+            binding.send.setColorFilter(ContextCompat.getColor(ChatActivity.this, R.color.primary), android.graphics.PorterDuff.Mode.MULTIPLY);
+            View view = this.getCurrentFocus();
+            if (view != binding.inputMessage) {
+                binding.layoutSend.setBackgroundResource(R.drawable.background_chat_input);
+                binding.send.setColorFilter(ContextCompat.getColor(ChatActivity.this, R.color.secondary_text), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        });
+
+        binding.inputMessage.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                sendMessage();
+                return true;
+            }
+            return false;
+        });
+    }
+//    clear focus on touch outside editText
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+
+                View icon = binding.send;
+                Rect iconRect = new Rect();
+                icon.getGlobalVisibleRect(iconRect);
+
+                outRect.right += iconRect.right - outRect.left;
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
     }
 
     private String getReadableDateTime(Date date) {
