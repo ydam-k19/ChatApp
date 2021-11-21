@@ -232,7 +232,7 @@ public class ChatActivity extends BaseActivity {
 
         }
         database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
-
+        encodedImage="empty Image";
         if (conversionId != null) {
             updateConversion(binding.inputMessage.getText().toString());
         } else {

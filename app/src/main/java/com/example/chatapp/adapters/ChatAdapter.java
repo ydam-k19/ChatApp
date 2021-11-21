@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -173,10 +174,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
 
             if(!chatMessage.image.equals("empty Image")){
+
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
-                //binding.textDateTime.setText(chatMessage.dateTime);
+
+
             }else{
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
