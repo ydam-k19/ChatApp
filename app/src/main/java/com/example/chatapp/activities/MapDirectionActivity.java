@@ -2,15 +2,22 @@ package com.example.chatapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
@@ -28,6 +35,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,6 +49,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MapDirectionActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -52,6 +62,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private Marker mkStart, mkDest;
     private Polyline route;
     private String senderId;
+
 
 
     private final String API_URL_TEMP = "https://api.mapbox.com/directions/v5/mapbox/driving/%s,%s;%s,%s?" +
@@ -78,6 +89,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         String receiveId=intent.getStringExtra("receiverId");
         String lat=intent.getStringExtra("senderLatitude");
         String lng=intent.getStringExtra("senderLongitude");
+
         Log.d("lattude mapDirection get",lat);
         Log.d("longittued map Direction get",lng);
 
@@ -101,6 +113,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
     }
 
+    private Bitmap getBitmapFromEncodedString(String encodedImage) {
+        if(!encodedImage.equals("empty Image")){
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        return null;
+
+    }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -118,11 +138,19 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
 
 
+    private static BitmapDescriptor scaleIcon(Bitmap unscaledBitmap, Double scale) {
+        int width = (int) (unscaledBitmap.getWidth() * scale);
+        int height = (int) (unscaledBitmap.getHeight() * scale);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(unscaledBitmap, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(scaledBitmap);
+    }
     private void drawRoute(ArrayList<LatLng> points) {
         if (points.size() < 1) return;
 
         mkDest = mMap.addMarker(new MarkerOptions()
                 .position(points.get(points.size() - 1))
+
+
         );
 
         route = mMap.addPolyline(new PolylineOptions()
@@ -235,4 +263,25 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         return marker;
     }
 
+    private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
+        // below line is use to generate a drawable.
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+
+        // below line is use to set bounds to our vector drawable.
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+
+        // below line is use to create a bitmap for our
+        // drawable which we have added.
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+        // below line is use to add bitmap in our canvas.
+        Canvas canvas = new Canvas(bitmap);
+
+        // below line is use to draw our
+        // vector drawable in canvas.
+        vectorDrawable.draw(canvas);
+
+        // after generating our bitmap we are returning our bitmap.
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 }
