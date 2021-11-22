@@ -124,18 +124,18 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                        //chatMessage.isSender=true;
 
                     } else {
 
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_SENDER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
-                        //chatMessage.isSender=false;
+
                     }
                     chatMessage.message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     chatMessage.isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
+                    chatMessage.lastSenderId=documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
                     conversations.add(chatMessage);
 
                 } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
@@ -146,6 +146,8 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                             conversations.get(i).message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                             conversations.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                             conversations.get(i).isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
+                            conversations.get(i).lastSenderId=documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
+
                             break;
                         }
                     }

@@ -25,23 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder>{
+public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder> {
 
     private final List<ChatMessage> chatMessages;
-    public List<ChatMessage>chatMessagesCopy;
+    public List<ChatMessage> chatMessagesCopy;
     private final ConversionListener conversionListener;
     private PreferenceManager preferenceManager;
     private Context context;
     FirebaseFirestore firebaseFirestore;
 
 
-    public RecentConversationsAdapter(Context context,List<ChatMessage> chatMessages, ConversionListener conversionListener){
-        this.context=context;
+    public RecentConversationsAdapter(Context context, List<ChatMessage> chatMessages, ConversionListener conversionListener) {
+        this.context = context;
         this.chatMessages = chatMessages;
         this.conversionListener = conversionListener;
-        preferenceManager=new PreferenceManager(context);
-        this.chatMessagesCopy=new ArrayList<>();
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        preferenceManager = new PreferenceManager(context);
+        this.chatMessagesCopy = new ArrayList<>();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 
     }
@@ -70,53 +70,77 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
 
     class ConversionViewHolder extends RecyclerView.ViewHolder {
         ItemContainerRecentConversionBinding binding;
-        ConversionViewHolder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding){
+
+        ConversionViewHolder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding) {
             super(itemContainerRecentConversionBinding.getRoot());
             binding = itemContainerRecentConversionBinding;
         }
 
-        void setData(ChatMessage chatMessage){
-            String receiver_img="you received an image";
-            String receiver_location="you received a location";
-            String sender_img="you sent an image";
-            String sender_location="you sent a location";
+        void setData(ChatMessage chatMessage) {
+            String receiver_img = "you received an image";
+            String receiver_location = "you received a location";
+            String sender_img = "you sent an image";
+            String sender_location = "you sent a location";
             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
             binding.textName.setText(chatMessage.conversionName);
             //if text!=null
 
-            Log.d("textRecent",String.valueOf(chatMessage.isMap));
-            Log.d("Sender ID",String.valueOf(chatMessage.senderId));
-            Log.d("Sender name",chatMessage.conversionName);
-            Log.d("Receiver Id",chatMessage.receiverId);
-            Log.d("ddddd",chatMessage.conversionId);
-            Log.d("KEY USER ID",preferenceManager.getString(Constants.KEY_USER_ID));
-           // Log.d("KEY RECEIVE ID",preferenceManager.getString(Constants.KEY_RECEIVER_ID));
-           // Log.d("KEY SENDER ID",preferenceManager.getString(Constants.KEY_SENDER_ID));
-            Log.d("user name",preferenceManager.getString(Constants.KEY_NAME));
+            Log.d("textRecent", String.valueOf(chatMessage.isMap));
+            Log.d("Sender ID", String.valueOf(chatMessage.senderId));
+            Log.d("Sender name", chatMessage.conversionName);
+            Log.d("Receiver Id", chatMessage.receiverId);
+            Log.d("ddddd", chatMessage.conversionId);
+            Log.d("KEY USER ID", preferenceManager.getString(Constants.KEY_USER_ID));
+            // Log.d("KEY RECEIVE ID",preferenceManager.getString(Constants.KEY_RECEIVER_ID));
+            // Log.d("KEY SENDER ID",preferenceManager.getString(Constants.KEY_SENDER_ID));
+            Log.d("user name", preferenceManager.getString(Constants.KEY_NAME));
             binding.textRecentMessage.setText(chatMessage.message);
 
-            if(!chatMessage.message.isEmpty()){
 
-                if(chatMessage.isSender)
-                    binding.textRecentMessage.setText("You: "+chatMessage.message);
-                else
-                    binding.textRecentMessage.setText(chatMessage.message);
-
-            }
-
-            else if(!chatMessage.isMap) {
-                if(chatMessage.isSender)
-                    binding.textRecentMessage.setText(sender_img);
-                else
-                    binding.textRecentMessage.setText(receiver_img);
-            }
-            else
-            {
-                if(chatMessage.isSender)
+            if (chatMessage.isMap) {
+                if (chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
                     binding.textRecentMessage.setText(sender_location);
                 else
                     binding.textRecentMessage.setText(receiver_location);
+
+            } else {
+
+                if (!chatMessage.message.isEmpty()) {
+                    if (chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                        binding.textRecentMessage.setText("You: " + chatMessage.message);
+                    else
+                        binding.textRecentMessage.setText(chatMessage.message);
+
+                } else {
+                    if (chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                        binding.textRecentMessage.setText(sender_img);
+                    else
+                        binding.textRecentMessage.setText(receiver_img);
+                }
             }
+
+//            if(!chatMessage.message.isEmpty()){
+//
+//                if(chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+//                    binding.textRecentMessage.setText("You: "+chatMessage.message);
+//                else
+//                    binding.textRecentMessage.setText(chatMessage.message);
+//
+//            }
+//
+//            if(!chatMessage.isMap) {
+//                if(chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+//                    binding.textRecentMessage.setText(sender_img);
+//                else
+//                    binding.textRecentMessage.setText(receiver_img);
+//            }
+//            else
+//            {
+//                if(chatMessage.lastSenderId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+//                    binding.textRecentMessage.setText(sender_location);
+//                else
+//                    binding.textRecentMessage.setText(receiver_location);
+//            }
 
             binding.getRoot().setOnClickListener(v -> {
                 User user = new User();
@@ -133,16 +157,15 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    public void filter(CharSequence charSequence){
-        List<ChatMessage>tempArrayList=new ArrayList<>();
-        if(!TextUtils.isEmpty(charSequence)){
-            for(ChatMessage data:chatMessages){
-                if(data.conversionName.toLowerCase().contains(charSequence)){
+    public void filter(CharSequence charSequence) {
+        List<ChatMessage> tempArrayList = new ArrayList<>();
+        if (!TextUtils.isEmpty(charSequence)) {
+            for (ChatMessage data : chatMessages) {
+                if (data.conversionName.toLowerCase().contains(charSequence)) {
                     tempArrayList.add(data);
                 }
             }
-        }
-        else{
+        } else {
             tempArrayList.addAll(chatMessagesCopy);
         }
 
@@ -150,7 +173,7 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
         chatMessages.addAll(tempArrayList);
         notifyDataSetChanged();
         tempArrayList.clear();
-        Log.d("chat message copy",String.valueOf(chatMessagesCopy.size()));
-        Log.d("value search",String.valueOf(chatMessages.size()));
+        Log.d("chat message copy", String.valueOf(chatMessagesCopy.size()));
+        Log.d("value search", String.valueOf(chatMessages.size()));
     }
 }

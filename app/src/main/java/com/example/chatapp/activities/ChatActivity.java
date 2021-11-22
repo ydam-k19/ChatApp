@@ -252,7 +252,7 @@ public class ChatActivity extends BaseActivity {
             database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
         encodedImage = "";
         if (conversionId != null) {
-            updateConversion(binding.inputMessage.getText().toString());
+            updateConversion(binding.inputMessage.getText().toString(), preferenceManager.getString(Constants.KEY_USER_ID));
         } else {
             HashMap<String, Object> conversion = new HashMap<>();
             conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
@@ -264,6 +264,7 @@ public class ChatActivity extends BaseActivity {
             conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
 
             conversion.put(Constants.KEY_LAST_IS_MAP,message.get(Constants.KEY_IS_MAP));
+            conversion.put(Constants.KEY_LAST_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
             conversion.put(Constants.KEY_TIMESTAMP, new Date());
             addConversion(conversion);
 
@@ -406,10 +407,6 @@ public class ChatActivity extends BaseActivity {
                         chatMessage.lng = documentChange.getDocument().getString(Constants.KEY_LONGITUDE);
                     else
                         chatMessage.lng = "";
-                    if(preferenceManager.getString(Constants.KEY_USER_ID).equals(documentChange.getDocument().getString(Constants.KEY_SENDER_ID)))
-                        chatMessage.isSender=true;
-                    else
-                        chatMessage.isSender=false;
 
                     chatMessage.isMap = documentChange.getDocument().getBoolean(Constants.KEY_IS_MAP);
 
@@ -521,7 +518,7 @@ public class ChatActivity extends BaseActivity {
                 .addOnSuccessListener(documentReference -> conversionId = documentReference.getId());
     }
 
-    private void updateConversion(String message) {
+    private void updateConversion(String message, String lastSenderId) {
         DocumentReference documentReference =
                 database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId); // return document
 
@@ -529,7 +526,8 @@ public class ChatActivity extends BaseActivity {
         documentReference.update(
                 Constants.KEY_LAST_MESSAGE, message,
                 Constants.KEY_TIMESTAMP, new Date(),
-                Constants.KEY_LAST_IS_MAP,preferenceManager.getBoolean(Constants.KEY_IS_MAP)
+                Constants.KEY_LAST_IS_MAP,preferenceManager.getBoolean(Constants.KEY_IS_MAP),
+                Constants.KEY_LAST_SENDER_ID,lastSenderId
 
         );
     }
