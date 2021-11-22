@@ -402,6 +402,10 @@ public class ChatActivity extends BaseActivity {
                         chatMessage.lng = documentChange.getDocument().getString(Constants.KEY_LONGITUDE);
                     else
                         chatMessage.lng = "";
+                    if(preferenceManager.getString(Constants.KEY_USER_ID).equals(documentChange.getDocument().getString(Constants.KEY_SENDER_ID)))
+                        chatMessage.isSender=true;
+                    else
+                        chatMessage.isSender=false;
 
                     chatMessage.isMap = documentChange.getDocument().getBoolean(Constants.KEY_IS_MAP);
 
