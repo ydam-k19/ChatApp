@@ -18,6 +18,8 @@ import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
     private final ConversionListener conversionListener;
     private PreferenceManager preferenceManager;
     private Context context;
+    FirebaseFirestore firebaseFirestore;
 
 
     public RecentConversationsAdapter(Context context,List<ChatMessage> chatMessages, ConversionListener conversionListener){
@@ -38,6 +41,7 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
         this.conversionListener = conversionListener;
         preferenceManager=new PreferenceManager(context);
         this.chatMessagesCopy=new ArrayList<>();
+        firebaseFirestore=FirebaseFirestore.getInstance();
 
 
     }
@@ -81,28 +85,37 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
             //if text!=null
 
             Log.d("textRecent",String.valueOf(chatMessage.isMap));
+            Log.d("Sender ID",String.valueOf(chatMessage.senderId));
+            Log.d("Sender name",chatMessage.conversionName);
+            Log.d("Receiver Id",chatMessage.receiverId);
+            Log.d("ddddd",chatMessage.conversionId);
+            Log.d("KEY USER ID",preferenceManager.getString(Constants.KEY_USER_ID));
+           // Log.d("KEY RECEIVE ID",preferenceManager.getString(Constants.KEY_RECEIVER_ID));
+           // Log.d("KEY SENDER ID",preferenceManager.getString(Constants.KEY_SENDER_ID));
+            Log.d("user name",preferenceManager.getString(Constants.KEY_NAME));
             binding.textRecentMessage.setText(chatMessage.message);
+
             if(!chatMessage.message.isEmpty()){
 
-                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
-                    binding.textRecentMessage.setText(chatMessage.message);
-                else
+                if(chatMessage.isSender)
                     binding.textRecentMessage.setText("You: "+chatMessage.message);
+                else
+                    binding.textRecentMessage.setText(chatMessage.message);
 
             }
 
             else if(!chatMessage.isMap) {
-                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
-                    binding.textRecentMessage.setText(receiver_img);
-                else
+                if(chatMessage.isSender)
                     binding.textRecentMessage.setText(sender_img);
+                else
+                    binding.textRecentMessage.setText(receiver_img);
             }
             else
             {
-                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
-                    binding.textRecentMessage.setText(receiver_location);
-                else
+                if(chatMessage.isSender)
                     binding.textRecentMessage.setText(sender_location);
+                else
+                    binding.textRecentMessage.setText(receiver_location);
             }
 
             binding.getRoot().setOnClickListener(v -> {

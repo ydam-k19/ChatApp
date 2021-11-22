@@ -10,5 +10,6 @@ public class ChatMessage {
     public Date dateObject;
     public String lat,lng;
     public boolean isMap;
+    public  boolean isSender;
 
 }
