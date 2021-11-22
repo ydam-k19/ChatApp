@@ -240,11 +240,12 @@ public class ChatActivity extends BaseActivity {
             message.put(Constants.KEY_LONGITUDE, "");
             message.put(Constants.KEY_LATITUDE, "");
             message.put(Constants.KEY_IS_MAP, false);
+            preferenceManager.putBoolean(Constants.KEY_IS_MAP,false);
         } else {
             message.put(Constants.KEY_LATITUDE, lat);
             message.put(Constants.KEY_LONGITUDE, lng);
             message.put(Constants.KEY_IS_MAP, true);
-
+            preferenceManager.putBoolean(Constants.KEY_IS_MAP,true);
         }
         database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
         encodedImage = "";
@@ -259,6 +260,8 @@ public class ChatActivity extends BaseActivity {
             conversion.put(Constants.KEY_RECEIVER_NAME, receiverUser.name);
             conversion.put(Constants.KEY_RECEIVER_IMAGE, receiverUser.image);
             conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
+
+            conversion.put(Constants.KEY_LAST_IS_MAP,message.get(Constants.KEY_IS_MAP));
             conversion.put(Constants.KEY_TIMESTAMP, new Date());
             addConversion(conversion);
 
@@ -512,9 +515,13 @@ public class ChatActivity extends BaseActivity {
     private void updateConversion(String message) {
         DocumentReference documentReference =
                 database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId); // return document
+
+
         documentReference.update(
                 Constants.KEY_LAST_MESSAGE, message,
-                Constants.KEY_TIMESTAMP, new Date()
+                Constants.KEY_TIMESTAMP, new Date(),
+                Constants.KEY_LAST_IS_MAP,preferenceManager.getBoolean(Constants.KEY_IS_MAP)
+
         );
     }
 

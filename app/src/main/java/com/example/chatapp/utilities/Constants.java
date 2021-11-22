@@ -38,6 +38,7 @@ public class Constants {
     public static final String KEY_SENDER_IMAGE="senderImage";
     public static final String KEY_RECEIVER_IMAGE="receiverImage";
     public static final String KEY_LAST_MESSAGE="lastMessage";
+    public static final String KEY_LAST_IS_MAP="isMapLast";
 
 
     public static final String KEY_AVAILABILITY="availability";

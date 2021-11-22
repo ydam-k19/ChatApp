@@ -1,8 +1,10 @@
 package com.example.chatapp.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,6 +15,8 @@ import com.example.chatapp.databinding.ItemContainerRecentConversionBinding;
 import com.example.chatapp.listeners.ConversionListener;
 import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
+import com.example.chatapp.utilities.Constants;
+import com.example.chatapp.utilities.PreferenceManager;
 
 import java.util.List;
 
@@ -20,11 +24,15 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
 
     private final List<ChatMessage> chatMessages;
     private final ConversionListener conversionListener;
+    private PreferenceManager preferenceManager;
+    private Context context;
 
 
-    public RecentConversationsAdapter(List<ChatMessage> chatMessages, ConversionListener conversionListener){
+    public RecentConversationsAdapter(Context context,List<ChatMessage> chatMessages, ConversionListener conversionListener){
+        this.context=context;
         this.chatMessages = chatMessages;
         this.conversionListener = conversionListener;
+        preferenceManager=new PreferenceManager(context);
 
     }
 
@@ -58,9 +66,35 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
         }
 
         void setData(ChatMessage chatMessage){
+            String receiver_img="you received an image";
+            String receiver_location="you received a location";
+            String sender_img="you sent an image";
+            String sender_location="you sent a location";
             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
             binding.textName.setText(chatMessage.conversionName);
+            //if text!=null
+
+            Log.d("textRecent",String.valueOf(chatMessage.isMap));
             binding.textRecentMessage.setText(chatMessage.message);
+            if(!chatMessage.message.isEmpty()){
+
+                binding.textRecentMessage.setText(chatMessage.message);
+            }
+
+            else if(!chatMessage.isMap) {
+                if(chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                    binding.textRecentMessage.setText(receiver_img);
+                else
+                    binding.textRecentMessage.setText(sender_img);
+            }
+            else
+            {
+                if(chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                    binding.textRecentMessage.setText(receiver_location);
+                else
+                    binding.textRecentMessage.setText(sender_location);
+            }
+
             binding.getRoot().setOnClickListener(v -> {
                 User user = new User();
                 user.id = chatMessage.conversionId;
