@@ -224,8 +224,6 @@ public class ChatActivity extends BaseActivity {
 
 
     private void sendMessage() {
-
-
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID)); // KEY_USER_ID = user that logging in system =user sender
         message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);     // id of user received message
@@ -247,7 +245,10 @@ public class ChatActivity extends BaseActivity {
             message.put(Constants.KEY_IS_MAP, true);
             preferenceManager.putBoolean(Constants.KEY_IS_MAP,true);
         }
-        database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
+        if(message.get(Constants.KEY_MESSAGE).toString().isEmpty()&&message.get(Constants.KEY_MESSAGE_IMAGE).toString().isEmpty())
+            Toast.makeText(getApplicationContext(), "No input message", Toast.LENGTH_SHORT).show();
+        else
+            database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
         encodedImage = "";
         if (conversionId != null) {
             updateConversion(binding.inputMessage.getText().toString());
