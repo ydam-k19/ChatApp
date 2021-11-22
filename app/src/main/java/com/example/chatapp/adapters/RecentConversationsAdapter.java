@@ -3,6 +3,7 @@ package com.example.chatapp.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +19,14 @@ import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder>{
 
     private final List<ChatMessage> chatMessages;
+    public List<ChatMessage>chatMessagesCopy;
     private final ConversionListener conversionListener;
     private PreferenceManager preferenceManager;
     private Context context;
@@ -33,6 +37,8 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
         this.chatMessages = chatMessages;
         this.conversionListener = conversionListener;
         preferenceManager=new PreferenceManager(context);
+        this.chatMessagesCopy=new ArrayList<>();
+
 
     }
 
@@ -112,5 +118,26 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
     private Bitmap getConversionImage(String encodedImage) {
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    public void filter(CharSequence charSequence){
+        List<ChatMessage>tempArrayList=new ArrayList<>();
+        if(!TextUtils.isEmpty(charSequence)){
+            for(ChatMessage data:chatMessages){
+                if(data.conversionName.toLowerCase().contains(charSequence)){
+                    tempArrayList.add(data);
+                }
+            }
+        }
+        else{
+            tempArrayList.addAll(chatMessagesCopy);
+        }
+
+        chatMessages.clear();
+        chatMessages.addAll(tempArrayList);
+        notifyDataSetChanged();
+        tempArrayList.clear();
+        Log.d("chat message copy",String.valueOf(chatMessagesCopy.size()));
+        Log.d("value search",String.valueOf(chatMessages.size()));
     }
 }

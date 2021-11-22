@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
@@ -63,6 +65,22 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.addNewChat.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
+        });
+        binding.searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    conversationsAdapter.filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
     }
 
@@ -130,6 +148,11 @@ public class MainActivity extends BaseActivity implements ConversionListener {
             }
             conversations.sort((o1, o2) -> o2.dateObject.compareTo(o1.dateObject));
             conversationsAdapter.notifyDataSetChanged();
+            for(ChatMessage data :conversations){
+                if(!conversationsAdapter.chatMessagesCopy.contains(data)){
+                    conversationsAdapter.chatMessagesCopy.add(data);
+                }
+            }
             binding.conversationsRecyclerView.smoothScrollToPosition(0);
             binding.conversationsRecyclerView.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);

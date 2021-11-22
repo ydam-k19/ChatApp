@@ -2,6 +2,8 @@ package com.example.chatapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.example.chatapp.adapters.UserAdapter;
@@ -20,6 +22,7 @@ public class UserActivity extends BaseActivity implements UserListener {
 
     private ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
+    private UserAdapter userAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,22 @@ public class UserActivity extends BaseActivity implements UserListener {
 
     public  void setListener(){
         binding.imageBack.setOnClickListener(v->onBackPressed());
+        binding.searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                userAdapter.filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -59,9 +78,11 @@ public class UserActivity extends BaseActivity implements UserListener {
                             users.add(user);
                         }
                         if(users.size()>0){
-                            UserAdapter userAdapter=new UserAdapter(users, this);
-                            binding.userRecyclerView.setAdapter(userAdapter);
-                            binding.userRecyclerView.setVisibility(View.VISIBLE);
+                             userAdapter=new UserAdapter(users, this);
+                             binding.userRecyclerView.setAdapter(userAdapter);
+                             binding.userRecyclerView.setVisibility(View.VISIBLE);
+                             for(User user:users)
+                                 userAdapter.userCopy.add(user);
                         }
                         else{
                             showErrorMessage();

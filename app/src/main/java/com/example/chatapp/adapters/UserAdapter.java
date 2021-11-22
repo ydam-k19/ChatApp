@@ -2,6 +2,7 @@ package com.example.chatapp.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,18 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.databinding.ItemContainerUserBinding;
 import com.example.chatapp.listeners.UserListener;
+import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private final List<User> users;
     private final UserListener userListener;
+    public List<User>userCopy;
 
     public UserAdapter(List<User> users, UserListener userListener) {
         this.users = users;
         this.userListener = userListener;
+        userCopy=new ArrayList<>();
     }
 
     @NonNull
@@ -44,6 +49,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    public void filter(CharSequence s) {
+        List<User>tempArrayList=new ArrayList<>();
+        if(!TextUtils.isEmpty(s)){
+            for(User data:users){
+                if(data.name.toLowerCase().contains(s)){
+                    tempArrayList.add(data);
+                }
+            }
+        }
+        else{
+            tempArrayList.addAll(userCopy);
+        }
+
+        users.clear();
+        users.addAll(tempArrayList);
+        notifyDataSetChanged();
+        tempArrayList.clear();
+
     }
 
     class UserViewHolder extends RecyclerView.ViewHolder {
