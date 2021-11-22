@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.example.chatapp.R;
 import com.example.chatapp.adapters.UserAdapter;
 import com.example.chatapp.databinding.ActivityUserBinding;
 import com.example.chatapp.listeners.UserListener;
@@ -53,6 +54,11 @@ public class UserActivity extends BaseActivity implements UserListener {
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        UserActivity.this.overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
     private void getUsers(){

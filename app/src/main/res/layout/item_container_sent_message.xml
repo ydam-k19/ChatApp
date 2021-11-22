@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/messageLayout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +18,10 @@
         app:layout_constraintWidth_max="wrap"
         app:layout_constraintWidth_percent="0.8">
 
+
+
         <TextView
+            android:layout_gravity="end"
             android:id="@+id/textMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,12 +32,14 @@
             android:paddingBottom="@dimen/_8sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp" />
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageMessage"
+            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:shapeAppearanceOverlay="@style/roundImageSentMessage" />
+
+
     </LinearLayout>
 
 

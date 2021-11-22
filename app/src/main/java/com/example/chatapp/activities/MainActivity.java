@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.chatapp.R;
 import com.example.chatapp.adapters.RecentConversationsAdapter;
 import com.example.chatapp.databinding.ActivityMainBinding;
 import com.example.chatapp.listeners.ConversionListener;
@@ -65,6 +66,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.addNewChat.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         });
         binding.searchBar.addTextChangedListener(new TextWatcher() {
             @Override

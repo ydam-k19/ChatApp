@@ -9,6 +9,6 @@
     <color name="icon_background">#20ffffff</color>
     <color name="error">#b00020</color>
     <color name="received_message_background">#F7F7F9</color>
-    <color name="green">#008000</color>
+    <color name="green">#01AE01</color>
     <color name="chat_background">#dfe0e4</color>
 </resources>
