@@ -23,6 +23,7 @@
     <string name="from">from</string>
     <string name="finish_sharing_location">finish sharing location</string>
     <string name="anonymous_user">Anonymous User</string>
+    <string name="continue_with">Continue with</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>
