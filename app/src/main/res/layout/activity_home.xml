@@ -47,7 +47,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageApp"
-
         app:srcCompat="@drawable/ic_logoappchat" />
 
     <TextView
@@ -56,11 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
         android:text="@string/from"
-        android:textAlignment="center"
         android:textSize="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_1sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/appName"
         app:layout_constraintTop_toBottomOf="@id/imageApp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

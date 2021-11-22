@@ -144,6 +144,11 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/sign_in"
             android:textColor="@color/primary"
+            android:background="@drawable/background_button"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
     </LinearLayout>

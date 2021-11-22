@@ -203,6 +203,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.textMessage.setText(chatMessage.message);
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.VISIBLE);
+
+                // set margin top
+                ViewGroup.MarginLayoutParams params =
+                        (ViewGroup.MarginLayoutParams)binding.imageMessage.getLayoutParams();
+                params.setMargins(params.leftMargin, params.topMargin + 10,
+                        params.rightMargin, params.bottomMargin);
             }
 
         }
@@ -243,6 +249,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.textMessage.setText(chatMessage.message);
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.VISIBLE);
+
+                // set margin top
+                ViewGroup.MarginLayoutParams params =
+                        (ViewGroup.MarginLayoutParams)binding.imageMessage.getLayoutParams();
+                params.setMargins(params.leftMargin, params.topMargin + 10,
+                        params.rightMargin, params.bottomMargin);
             }
 
 
