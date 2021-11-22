@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -285,7 +286,7 @@ public class ChatActivity extends BaseActivity {
                 sendNotification(body.toString());
 
             } catch (Exception exception) {
-                showToast(exception.getMessage());
+                Log.d("exception TAG", exception.toString());
             }
         }
         binding.inputMessage.setText(null);
@@ -310,7 +311,8 @@ public class ChatActivity extends BaseActivity {
                             JSONArray results = responseJson.getJSONArray("results");
                             if (responseJson.getInt("failure") == 1) {
                                 JSONObject error = (JSONObject) results.get(0);
-                                showToast(error.getString("error"));
+
+                                Log.d("error TAG", error.getString("error"));
                                 return;
                             }
                         }
@@ -320,13 +322,15 @@ public class ChatActivity extends BaseActivity {
                     }
 
                 } else {
-                    showToast("Error: " + response.code());
+                    Log.d("error TAG", ""+ response.code());
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-                showToast(t.getMessage());
+                Log.d("exception TAG", t.getMessage());
+
             }
         });
     }
