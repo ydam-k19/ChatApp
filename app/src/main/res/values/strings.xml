@@ -21,6 +21,9 @@
     <string name="share_location">Share location</string>
     <string name="appName">Halo Chat</string>
     <string name="from">from</string>
+    <string name="finish_sharing_location">finish sharing location</string>
+    <string name="anonymous_user">Anonymous User</string>
+    <string name="fontFamily">sans-serif</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>

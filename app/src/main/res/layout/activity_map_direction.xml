@@ -20,8 +20,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="finish sharing location"
-
+        android:layout_marginBottom="@dimen/_21sdp"
+        android:contentDescription="@string/finish_sharing_location"
+        app:borderWidth="0dp"
+        app:fabCustomSize="@dimen/_40sdp"
+        android:tint="@color/primary"
         android:src="@drawable/ic_stopggmap"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

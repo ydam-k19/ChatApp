@@ -92,6 +92,7 @@ public class ChatActivity extends BaseActivity {
         init();                 // message conversation not loaded
         listenMessages();       // get messages from database
 
+
         //animations
         fab_add = binding.fabAdding;
         fab_img = binding.fabImg;
@@ -133,6 +134,7 @@ public class ChatActivity extends BaseActivity {
 
 
     }
+
 
 
     private void animateFab() {
@@ -433,6 +435,9 @@ public class ChatActivity extends BaseActivity {
 
     private void loadReceiverDetails() {
         receiverUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
+        byte[] bytes = Base64.decode(receiverUser.image, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        binding.imageProfile.setImageBitmap(bitmap);
         binding.textName.setText(receiverUser.name);
     }
 
