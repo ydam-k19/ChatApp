@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     private void init() {
 
         conversations = new ArrayList<>();
-        conversationsAdapter = new RecentConversationsAdapter(conversations,this);
+        conversationsAdapter = new RecentConversationsAdapter(getApplicationContext(),conversations,this);
         binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
         database = FirebaseFirestore.getInstance();
     }
@@ -104,6 +104,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+
                     } else {
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_SENDER_NAME);
@@ -111,6 +112,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                     }
                     chatMessage.message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                    chatMessage.isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
                     conversations.add(chatMessage);
 
                 } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
@@ -120,6 +122,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                         if (conversations.get(i).senderId.equals(senderId) && conversations.get(i).receiverId.equals(receiverId)) {
                             conversations.get(i).message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                             conversations.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                            conversations.get(i).isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
                             break;
                         }
                     }

@@ -179,18 +179,29 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
 
 
-            if (!chatMessage.image.isEmpty()) {
+            if (!chatMessage.image.isEmpty()&&chatMessage.message.isEmpty()) {   // image no text
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
 
-            } else {
+            }
+            else if(chatMessage.image.isEmpty()&&!chatMessage.message.isEmpty()){ // text no image
+
+
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.GONE);
+                binding.textMessage.setVisibility(View.VISIBLE);
+            }
+            else { // both
+                binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.textDateTime.setText(chatMessage.dateTime);
+
+                binding.textMessage.setText(chatMessage.message);
+                binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.VISIBLE);
             }
 
@@ -208,20 +219,29 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
 
-            if (!chatMessage.image.isEmpty()) {
-
+            if (!chatMessage.image.isEmpty()&&chatMessage.message.isEmpty()) {   // image no text
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
 
+            }
+            else if(chatMessage.image.isEmpty()&&!chatMessage.message.isEmpty()){ // text no image
 
-            } else {
+
                 binding.textMessage.setText(chatMessage.message);
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.GONE);
+                binding.textMessage.setVisibility(View.VISIBLE);
+            }
+            else { // both
+                binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
+                binding.textDateTime.setText(chatMessage.dateTime);
+
+                binding.textMessage.setText(chatMessage.message);
+                binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.VISIBLE);
             }
 
