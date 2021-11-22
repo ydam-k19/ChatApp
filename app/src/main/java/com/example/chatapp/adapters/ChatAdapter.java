@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -196,6 +197,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
             }
+            else if(chatMessage.message.isEmpty()){
+                binding.textMessage.setVisibility(View.GONE);
+            }
             else { // both
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
@@ -233,6 +237,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.textMessage.setVisibility(View.GONE);
 
             }
+
             else if(chatMessage.image.isEmpty()&&!chatMessage.message.isEmpty()){ // text no image
 
 
@@ -241,6 +246,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
+            }
+            else if(chatMessage.message.isEmpty()){
+                binding.textMessage.setVisibility(View.GONE);
             }
             else { // both
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));

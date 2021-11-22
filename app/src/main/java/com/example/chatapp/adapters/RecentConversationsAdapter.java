@@ -78,18 +78,22 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
             binding.textRecentMessage.setText(chatMessage.message);
             if(!chatMessage.message.isEmpty()){
 
-                binding.textRecentMessage.setText(chatMessage.message);
+                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                    binding.textRecentMessage.setText(chatMessage.message);
+                else
+                    binding.textRecentMessage.setText("You: "+chatMessage.message);
+
             }
 
             else if(!chatMessage.isMap) {
-                if(chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
                     binding.textRecentMessage.setText(receiver_img);
                 else
                     binding.textRecentMessage.setText(sender_img);
             }
             else
             {
-                if(chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
+                if(!chatMessage.receiverId.equals(preferenceManager.getString(Constants.KEY_USER_ID)))
                     binding.textRecentMessage.setText(receiver_location);
                 else
                     binding.textRecentMessage.setText(sender_location);
