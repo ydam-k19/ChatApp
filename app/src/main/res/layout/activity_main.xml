@@ -13,7 +13,6 @@
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginLeft="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@drawable/background_icon"
         android:scaleType="centerCrop"
@@ -27,7 +26,6 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
         android:background="@drawable/background_icon"
         android:padding="@dimen/_6sdp"
         android:src="@drawable/ic_logout"
@@ -52,24 +50,30 @@
         app:layout_constraintStart_toEndOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="@id/imageProfile"/>
 
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:paddingTop="@dimen/_8ssp"
+        android:paddingStart="@dimen/_24ssp"
+        android:paddingBottom="@dimen/_8ssp"
+        android:paddingEnd="@dimen/_24sdp"
+        android:hint="@string/search_name"
+        android:background="@drawable/background_search_bar"
+        app:layout_constraintTop_toBottomOf="@id/imageProfile"
+        android:drawablePadding="@dimen/_12sdp"
+        android:drawableStart="@drawable/ic_search"
+        android:textSize="@dimen/_12sdp"
+        android:inputType="text" />
 
     
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_16sdp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageProfile">
-
-
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_name"
-            android:textSize="@dimen/_14sdp" />
+        app:layout_constraintTop_toBottomOf="@id/searchBar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/conversationsRecyclerView"
