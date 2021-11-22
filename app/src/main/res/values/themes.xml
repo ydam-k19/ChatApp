@@ -3,6 +3,8 @@
     <style name="Theme.ChatApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/primary_dark</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
     </style>
     <style name="roundImageReceivedMessage" parent="">
         <item name="cornerFamily">rounded</item>
@@ -21,5 +23,14 @@
     <style name="roundImagePreview" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/_10sdp</item>
+    </style>
+
+
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 </resources>
