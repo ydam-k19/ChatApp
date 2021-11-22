@@ -25,7 +25,7 @@
     <string name="anonymous_user">Anonymous User</string>
     <string name="continue_with">Continue with</string>
     <string name="logo_app">logo app</string>
-    <string name="search_name">search name</string>
+    <string name="search_name">Search name</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>
