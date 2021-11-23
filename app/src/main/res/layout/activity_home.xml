@@ -4,40 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.HomeActivity"
-    >
+    tools:context=".activities.HomeActivity">
 
     <ImageView
         android:id="@+id/imageApp"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_160sdp"
-        app:srcCompat="@drawable/launch_icon"
-        android:contentDescription="@string/logo_app" />
+        android:contentDescription="@string/logo_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/launch_icon" />
 
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="@string/appName"
         android:layout_marginStart="@dimen/_8ssp"
+        android:text="@string/appName"
+        android:textColor="@color/primary"
         android:textSize="@dimen/_20sdp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/imageLogo"
-        app:layout_constraintStart_toEndOf="@id/imageLogo"
-        android:textColor="@color/primary"/>
+        app:layout_constraintStart_toEndOf="@id/imageLogo" />
 
     <ImageView
         android:id="@+id/imageLogo"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
-        app:layout_constraintEnd_toStartOf="@id/imageApp"
-        android:layout_marginBottom="@dimen/_50sdp"
         android:layout_marginEnd="@dimen/_8ssp"
+        android:layout_marginBottom="@dimen/_50sdp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageApp"
         app:srcCompat="@drawable/ic_logo_app_chat" />
 
     <TextView

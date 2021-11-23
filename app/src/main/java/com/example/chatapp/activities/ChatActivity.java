@@ -137,7 +137,6 @@ public class ChatActivity extends BaseActivity {
     }
 
 
-
     private void animateFab() {
         if (!isOpen) {
             fab_add.startAnimation(rotateOpen);
@@ -239,14 +238,14 @@ public class ChatActivity extends BaseActivity {
             message.put(Constants.KEY_LONGITUDE, "");
             message.put(Constants.KEY_LATITUDE, "");
             message.put(Constants.KEY_IS_MAP, false);
-            preferenceManager.putBoolean(Constants.KEY_IS_MAP,false);
+            preferenceManager.putBoolean(Constants.KEY_IS_MAP, false);
         } else {
             message.put(Constants.KEY_LATITUDE, lat);
             message.put(Constants.KEY_LONGITUDE, lng);
             message.put(Constants.KEY_IS_MAP, true);
-            preferenceManager.putBoolean(Constants.KEY_IS_MAP,true);
+            preferenceManager.putBoolean(Constants.KEY_IS_MAP, true);
         }
-        if(message.get(Constants.KEY_MESSAGE).toString().isEmpty()&&message.get(Constants.KEY_MESSAGE_IMAGE).toString().isEmpty())
+        if (message.get(Constants.KEY_MESSAGE).toString().isEmpty() && message.get(Constants.KEY_MESSAGE_IMAGE).toString().isEmpty())
             Toast.makeText(getApplicationContext(), "No input message", Toast.LENGTH_SHORT).show();
         else
             database.collection(Constants.KEY_COLLECTION_CHAT).add(message); // add to collections
@@ -263,7 +262,7 @@ public class ChatActivity extends BaseActivity {
             conversion.put(Constants.KEY_RECEIVER_IMAGE, receiverUser.image);
             conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
 
-            conversion.put(Constants.KEY_LAST_IS_MAP,message.get(Constants.KEY_IS_MAP));
+            conversion.put(Constants.KEY_LAST_IS_MAP, message.get(Constants.KEY_IS_MAP));
             conversion.put(Constants.KEY_LAST_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
             conversion.put(Constants.KEY_TIMESTAMP, new Date());
             addConversion(conversion);
@@ -323,7 +322,7 @@ public class ChatActivity extends BaseActivity {
                     }
 
                 } else {
-                    Log.d("error TAG", ""+ response.code());
+                    Log.d("error TAG", "" + response.code());
 
                 }
             }
@@ -384,7 +383,7 @@ public class ChatActivity extends BaseActivity {
             return;
         }
         if (value != null) {
-            int count = chatMessages.size();  // =0
+            int count = chatMessages.size();
 
             for (DocumentChange documentChange : value.getDocumentChanges()) {
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
@@ -414,7 +413,7 @@ public class ChatActivity extends BaseActivity {
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
                     chatMessages.add(chatMessage);
                 }
-            } //=10
+            }
 
             Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
 
@@ -526,8 +525,8 @@ public class ChatActivity extends BaseActivity {
         documentReference.update(
                 Constants.KEY_LAST_MESSAGE, message,
                 Constants.KEY_TIMESTAMP, new Date(),
-                Constants.KEY_LAST_IS_MAP,preferenceManager.getBoolean(Constants.KEY_IS_MAP),
-                Constants.KEY_LAST_SENDER_ID,lastSenderId
+                Constants.KEY_LAST_IS_MAP, preferenceManager.getBoolean(Constants.KEY_IS_MAP),
+                Constants.KEY_LAST_SENDER_ID, lastSenderId
 
         );
     }

@@ -23,10 +23,10 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferenceManager =new PreferenceManager(getApplicationContext());
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
-        if(preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)){ // check If the user signed in or not by key
-            Intent intent=new Intent(getApplicationContext(),MainActivity.class); // redirect to Main activity
+        if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) { // check If the user signed in or not by key
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class); // redirect to Main activity
             startActivity(intent);
             finish();
         }
@@ -38,38 +38,37 @@ public class SignInActivity extends AppCompatActivity {
         setListeners();
     }
 
-    private void setListeners(){
+    private void setListeners() {
         // if the user click to
         binding.textCreateNewAccount.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(),SignUpActivity.class)));
+                startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));
 
-        binding.buttonSignIn.setOnClickListener(v->{
-            if(isValidSignInDetails())
+        binding.buttonSignIn.setOnClickListener(v -> {
+            if (isValidSignInDetails())
                 signIn();
         });
     }
 
-    public void signIn(){
+    public void signIn() {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();  // init connection gate to firebase
 
         database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_EMAIL,binding.inputEmail.getText().toString()) // query by key-value
-                .whereEqualTo(Constants.KEY_PASSWORD,binding.inputPassword.getText().toString())
+                .whereEqualTo(Constants.KEY_EMAIL, binding.inputEmail.getText().toString()) // query by key-value
+                .whereEqualTo(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString())
                 .get()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()&&task.getResult()!=null&&task.getResult().getDocuments().size()>0){
-                        DocumentSnapshot documentSnapshot=task.getResult().getDocuments().get(0);
-                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN,true);
-                        preferenceManager.putString(Constants.KEY_USER_ID,documentSnapshot.getId());
-                        preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_NAME));
-                        preferenceManager.putString(Constants.KEY_IMAGE,documentSnapshot.getString(Constants.KEY_IMAGE));
-                        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                        preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                        preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                        preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         //Intent intent=new Intent(getApplicationContext(),SignInActivities.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         loading(false);
                         showToast("Unable to sign in");
                     }

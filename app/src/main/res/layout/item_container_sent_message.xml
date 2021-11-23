@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
     android:layout_marginTop="@dimen/_8sdp"
+    android:animateLayoutChanges="true"
     android:padding="@dimen/_4sdp">
 
     <LinearLayout
@@ -19,12 +19,11 @@
         app:layout_constraintWidth_percent="0.8">
 
 
-
         <TextView
-            android:layout_gravity="end"
             android:id="@+id/textMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:background="@drawable/background_sent_message"
             android:paddingStart="@dimen/_12sdp"
             android:paddingTop="@dimen/_8sdp"
@@ -32,11 +31,12 @@
             android:paddingBottom="@dimen/_8sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageMessage"
-            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             app:shapeAppearanceOverlay="@style/roundImageSentMessage" />
 
 
@@ -47,10 +47,10 @@
         android:id="@+id/textDateTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_4sdp"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/_8ssp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/messageLayout" />
 

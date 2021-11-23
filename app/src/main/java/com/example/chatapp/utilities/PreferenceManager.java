@@ -16,21 +16,21 @@ public class PreferenceManager {  // preferenceManger used to help create Prefer
         editor.apply(); // like commit
     }
 
-    public Boolean getBoolean(String key){
-        return  sharedPreferences.getBoolean(key,false);
+    public Boolean getBoolean(String key) {
+        return sharedPreferences.getBoolean(key, false);
     }
 
-    public void putString(String key, String value){
+    public void putString(String key, String value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key,value);
+        editor.putString(key, value);
         editor.apply();
     }
 
-    public String getString(String key){
-        return sharedPreferences.getString(key,null);
+    public String getString(String key) {
+        return sharedPreferences.getString(key, null);
     }
 
-    public void clear(){  // clear after using SharedPreference
+    public void clear() {  // clear after using SharedPreference
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();

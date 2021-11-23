@@ -17,16 +17,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_21sdp"
+        android:backgroundTint="@color/primary"
+        android:contentDescription="@string/finish_sharing_location"
+        android:src="@drawable/ic_stopggmap"
+        app:borderWidth="0dp"
+        app:fabCustomSize="@dimen/_40sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="@dimen/_21sdp"
-        android:contentDescription="@string/finish_sharing_location"
-        app:borderWidth="0dp"
-        app:fabCustomSize="@dimen/_40sdp"
-        android:backgroundTint="@color/primary"
-        app:tint="@color/white"
         app:maxImageSize="@dimen/_40sdp"
-        android:src="@drawable/ic_stopggmap"/>
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

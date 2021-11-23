@@ -71,12 +71,12 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     loading(false);
                     preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                    preferenceManager.putString(Constants.KEY_USER_ID,documentReference.getId());
+                    preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
 
-                    preferenceManager.putString(Constants.KEY_NAME,binding.inputName.getText().toString());
-                    preferenceManager.putString(Constants.KEY_IMAGE,encodedImage);
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
+                    preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
                 })
@@ -90,19 +90,19 @@ public class SignUpActivity extends AppCompatActivity {
     private String encodeImage(Bitmap bitmap) {
         int previewWidth = 150;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
-        ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes,Base64.DEFAULT);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
 
     }
 
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if(result.getResultCode() == RESULT_OK){
-                    if(result.getData()!=null){
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
                         Uri imageUri = result.getData().getData();
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(imageUri);

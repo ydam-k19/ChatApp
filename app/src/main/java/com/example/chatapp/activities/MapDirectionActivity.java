@@ -258,7 +258,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         LatLngBounds bounds = builder.build();
 
         int padding = 0; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,150);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 150);
 
 
         mMap.animateCamera(cu);

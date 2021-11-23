@@ -22,12 +22,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private final List<User> users;
     private final UserListener userListener;
-    public List<User>userCopy;
+    public List<User> userCopy;
 
     public UserAdapter(List<User> users, UserListener userListener) {
         this.users = users;
         this.userListener = userListener;
-        userCopy=new ArrayList<>();
+        userCopy = new ArrayList<>();
     }
 
     @NonNull
@@ -52,15 +52,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public void filter(CharSequence s) {
-        List<User>tempArrayList=new ArrayList<>();
-        if(!TextUtils.isEmpty(s)){
-            for(User data:users){
-                if(data.name.toLowerCase().contains(s)){
+        List<User> tempArrayList = new ArrayList<>();
+        if (!TextUtils.isEmpty(s)) {
+            for (User data : users) {
+                if (data.name.toLowerCase().contains(s)) {
                     tempArrayList.add(data);
                 }
             }
-        }
-        else{
+        } else {
             tempArrayList.addAll(userCopy);
         }
 

@@ -180,15 +180,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
 
 
-            if (!chatMessage.image.isEmpty()&&chatMessage.message.isEmpty()) {   // image no text
+            if (!chatMessage.image.isEmpty() && chatMessage.message.isEmpty()) {   // image no text
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
 
-            }
-            else if(chatMessage.image.isEmpty()&&!chatMessage.message.isEmpty()){ // text no image
+            } else if (chatMessage.image.isEmpty() && !chatMessage.message.isEmpty()) { // text no image
 
 
                 binding.textMessage.setText(chatMessage.message);
@@ -196,11 +195,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
-            }
-            else if(chatMessage.message.isEmpty()){
+            } else if (chatMessage.message.isEmpty()) {
                 binding.textMessage.setVisibility(View.GONE);
-            }
-            else { // both
+            } else { // both
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
@@ -210,7 +207,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 // set margin top
                 ViewGroup.MarginLayoutParams params =
-                        (ViewGroup.MarginLayoutParams)binding.imageMessage.getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) binding.imageMessage.getLayoutParams();
                 params.setMargins(params.leftMargin, params.topMargin + 10,
                         params.rightMargin, params.bottomMargin);
             }
@@ -229,16 +226,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
 
-            if (!chatMessage.image.isEmpty()&&chatMessage.message.isEmpty()) {   // image no text
+            if (!chatMessage.image.isEmpty() && chatMessage.message.isEmpty()) {   // image no text
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.textMessage.setVisibility(View.GONE);
 
-            }
-
-            else if(chatMessage.image.isEmpty()&&!chatMessage.message.isEmpty()){ // text no image
+            } else if (chatMessage.image.isEmpty() && !chatMessage.message.isEmpty()) { // text no image
 
 
                 binding.textMessage.setText(chatMessage.message);
@@ -246,11 +241,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 binding.imageMessage.setVisibility(View.GONE);
                 binding.textMessage.setVisibility(View.VISIBLE);
-            }
-            else if(chatMessage.message.isEmpty()){
+            } else if (chatMessage.message.isEmpty()) {
                 binding.textMessage.setVisibility(View.GONE);
-            }
-            else { // both
+            } else { // both
                 binding.imageMessage.setImageBitmap(getMessageImage(chatMessage.image));
                 binding.textDateTime.setText(chatMessage.dateTime);
 
@@ -260,7 +253,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 // set margin top
                 ViewGroup.MarginLayoutParams params =
-                        (ViewGroup.MarginLayoutParams)binding.imageMessage.getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) binding.imageMessage.getLayoutParams();
                 params.setMargins(params.leftMargin, params.topMargin + 10,
                         params.rightMargin, params.bottomMargin);
             }

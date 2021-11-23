@@ -24,19 +24,20 @@ public class UserActivity extends BaseActivity implements UserListener {
     private ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
     private UserAdapter userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityUserBinding.inflate(getLayoutInflater());
+        binding = ActivityUserBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
-        preferenceManager=new PreferenceManager(getApplicationContext());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         setListener();
         getUsers();
     }
 
-    public  void setListener(){
-        binding.imageBack.setOnClickListener(v->onBackPressed());
+    public void setListener() {
+        binding.imageBack.setOnClickListener(v -> onBackPressed());
         binding.searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,59 +56,59 @@ public class UserActivity extends BaseActivity implements UserListener {
         });
 
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        UserActivity.this.overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        UserActivity.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    private void getUsers(){
+    private void getUsers() {
         loading(true);
-        FirebaseFirestore database =FirebaseFirestore.getInstance();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
-                    String currentUserId=preferenceManager.getString(Constants.KEY_USER_ID);
-                    if(task.isSuccessful()&&task.getResult()!=null){
-                        List<User> users=new ArrayList<>();
-                        for(QueryDocumentSnapshot queryDocumentSnapshot:task.getResult()){
-                            if(currentUserId.equals(queryDocumentSnapshot.getId())){
+                    String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<User> users = new ArrayList<>();
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            if (currentUserId.equals(queryDocumentSnapshot.getId())) {
                                 continue;
                             }
-                            User user=new User();
-                            user.name=queryDocumentSnapshot.getString(Constants.KEY_NAME);
-                            user.email=queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
-                            user.image=queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
-                            user.token=queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
-                            user.id=queryDocumentSnapshot.getId();
+                            User user = new User();
+                            user.name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
+                            user.email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
+                            user.image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
+                            user.token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
+                            user.id = queryDocumentSnapshot.getId();
                             users.add(user);
                         }
-                        if(users.size()>0){
-                             userAdapter=new UserAdapter(users, this);
-                             binding.userRecyclerView.setAdapter(userAdapter);
-                             binding.userRecyclerView.setVisibility(View.VISIBLE);
-                             for(User user:users)
-                                 userAdapter.userCopy.add(user);
-                        }
-                        else{
+                        if (users.size() > 0) {
+                            userAdapter = new UserAdapter(users, this);
+                            binding.userRecyclerView.setAdapter(userAdapter);
+                            binding.userRecyclerView.setVisibility(View.VISIBLE);
+                            for (User user : users)
+                                userAdapter.userCopy.add(user);
+                        } else {
                             showErrorMessage();
                         }
-                    }
-                    else{
+                    } else {
                         showErrorMessage();
                     }
                 });
     }
-    private void showErrorMessage(){
-        binding.textErrorMessage.setText(String.format("%s","No user available"));
+
+    private void showErrorMessage() {
+        binding.textErrorMessage.setText(String.format("%s", "No user available"));
         binding.textErrorMessage.setVisibility(View.VISIBLE);
     }
 
-    private void loading(boolean isLoading){
-        if(isLoading){
+    private void loading(boolean isLoading) {
+        if (isLoading) {
             binding.progressBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
     }

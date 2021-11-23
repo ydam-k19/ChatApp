@@ -55,18 +55,17 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     private void init() {
 
         conversations = new ArrayList<>();
-        conversationsAdapter = new RecentConversationsAdapter(getApplicationContext(),conversations,this);
+        conversationsAdapter = new RecentConversationsAdapter(getApplicationContext(), conversations, this);
         binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
         database = FirebaseFirestore.getInstance();
     }
-
 
 
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.addNewChat.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
-            overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         });
         binding.searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,7 +75,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    conversationsAdapter.filter(s);
+                conversationsAdapter.filter(s);
             }
 
             @Override
@@ -98,12 +97,12 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void listenConversations(){
+    private void listenConversations() {
         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
                 .addSnapshotListener(eventListener);
         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_RECEIVER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
+                .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
                 .addSnapshotListener(eventListener);
     }
 
@@ -134,8 +133,8 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                     }
                     chatMessage.message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
-                    chatMessage.isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
-                    chatMessage.lastSenderId=documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
+                    chatMessage.isMap = documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
+                    chatMessage.lastSenderId = documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
                     conversations.add(chatMessage);
 
                 } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
@@ -145,8 +144,8 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                         if (conversations.get(i).senderId.equals(senderId) && conversations.get(i).receiverId.equals(receiverId)) {
                             conversations.get(i).message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
                             conversations.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
-                            conversations.get(i).isMap=documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
-                            conversations.get(i).lastSenderId=documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
+                            conversations.get(i).isMap = documentChange.getDocument().getBoolean(Constants.KEY_LAST_IS_MAP);
+                            conversations.get(i).lastSenderId = documentChange.getDocument().getString(Constants.KEY_LAST_SENDER_ID);
 
                             break;
                         }
@@ -155,8 +154,8 @@ public class MainActivity extends BaseActivity implements ConversionListener {
             }
             conversations.sort((o1, o2) -> o2.dateObject.compareTo(o1.dateObject));
             conversationsAdapter.notifyDataSetChanged();
-            for(ChatMessage data :conversations){
-                if(!conversationsAdapter.chatMessagesCopy.contains(data)){
+            for (ChatMessage data : conversations) {
+                if (!conversationsAdapter.chatMessagesCopy.contains(data)) {
                     conversationsAdapter.chatMessagesCopy.add(data);
                 }
             }
@@ -173,10 +172,10 @@ public class MainActivity extends BaseActivity implements ConversionListener {
 
 
     private void updateToken(String token) {
-        preferenceManager.putString(Constants.KEY_FCM_TOKEN,token);
+        preferenceManager.putString(Constants.KEY_FCM_TOKEN, token);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference =
-                        database.collection(Constants.KEY_COLLECTION_USERS).document(
+                database.collection(Constants.KEY_COLLECTION_USERS).document(
                         preferenceManager.getString(Constants.KEY_USER_ID)
                 );
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
@@ -203,8 +202,8 @@ public class MainActivity extends BaseActivity implements ConversionListener {
 
     @Override
     public void onConversionClicked(User user) {
-        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
-        intent.putExtra(Constants.KEY_USER,user);
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
     }
 }

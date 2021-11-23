@@ -18,7 +18,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_corner_radius="@dimen/_8sdp"/>
+        app:riv_corner_radius="@dimen/_8sdp" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageSignOut"
@@ -29,9 +29,9 @@
         android:background="@drawable/background_icon"
         android:padding="@dimen/_6sdp"
         android:src="@drawable/ic_logout"
+        android:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:tint="@color/white"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textName"
@@ -48,26 +48,26 @@
         app:layout_constraintBottom_toBottomOf="@id/imageProfile"
         app:layout_constraintEnd_toStartOf="@id/imageSignOut"
         app:layout_constraintStart_toEndOf="@id/imageProfile"
-        app:layout_constraintTop_toTopOf="@id/imageProfile"/>
+        app:layout_constraintTop_toTopOf="@id/imageProfile" />
 
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
-        android:paddingTop="@dimen/_8ssp"
-        android:paddingStart="@dimen/_24ssp"
-        android:paddingBottom="@dimen/_8ssp"
-        android:paddingEnd="@dimen/_24sdp"
-        android:hint="@string/search_name"
         android:background="@drawable/background_search_bar"
-        app:layout_constraintTop_toBottomOf="@id/imageProfile"
-        android:drawablePadding="@dimen/_12sdp"
         android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="@dimen/_12sdp"
+        android:hint="@string/search_name"
+        android:inputType="text"
+        android:paddingStart="@dimen/_24ssp"
+        android:paddingTop="@dimen/_8ssp"
+        android:paddingEnd="@dimen/_24sdp"
+        android:paddingBottom="@dimen/_8ssp"
         android:textSize="@dimen/_12sdp"
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@id/imageProfile" />
 
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -84,13 +84,13 @@
             android:overScrollMode="never"
             android:padding="@dimen/_20sdp"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -101,12 +101,12 @@
         android:layout_marginEnd="@dimen/_24sdp"
         android:layout_marginBottom="@dimen/_24sdp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_new_message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:backgroundTint="@color/primary"
-        app:tint="@color/white"
-        app:maxImageSize="@dimen/_25sdp"
         android:scaleType="fitEnd"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:src="@drawable/ic_new_message"
+        app:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/_25sdp"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
