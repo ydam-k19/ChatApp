@@ -137,8 +137,8 @@ public class ChatActivity extends BaseActivity {
 
         fab_qrcode.setOnClickListener(view -> {
 
-            Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
-//            pickLocation.launch(intent);
+            Intent intent = new Intent(ChatActivity.this, QRcodeActivity.class);
+            startActivity(intent);
 
             animateFab();
         });
