@@ -79,7 +79,7 @@ public class ChatActivity extends BaseActivity {
     private String lng = "";
 
 
-    FloatingActionButton fab_add, fab_img, fab_location;
+    FloatingActionButton fab_add, fab_img, fab_location, fab_qrcode;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean isOpen = false;
 
@@ -98,6 +98,7 @@ public class ChatActivity extends BaseActivity {
         fab_add = binding.fabAdding;
         fab_img = binding.fabImg;
         fab_location = binding.fabLocation;
+        fab_qrcode = binding.fabQrcode;
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close);
@@ -134,6 +135,15 @@ public class ChatActivity extends BaseActivity {
         });
 
 
+        fab_qrcode.setOnClickListener(view -> {
+
+            Intent intent = new Intent(ChatActivity.this, MapsActivity.class);
+//            pickLocation.launch(intent);
+
+            animateFab();
+        });
+
+
     }
 
 
@@ -142,19 +152,26 @@ public class ChatActivity extends BaseActivity {
             fab_add.startAnimation(rotateOpen);
             fab_img.startAnimation(fromBottom);
             fab_location.startAnimation(fromBottom);
+            fab_qrcode.startAnimation(fromBottom);
             fab_img.setClickable(true);
             fab_location.setClickable(true);
+            fab_qrcode.setClickable(true);
             fab_img.setVisibility(View.VISIBLE);
             fab_location.setVisibility(View.VISIBLE);
+            fab_qrcode.setVisibility(View.VISIBLE);
             isOpen = true;
         } else {
             fab_add.startAnimation(rotateClose);
             fab_img.startAnimation(toBottom);
             fab_location.startAnimation(toBottom);
+            fab_qrcode.startAnimation(toBottom);
+
             fab_img.setClickable(false);
             fab_location.setClickable(false);
+            fab_qrcode.setClickable(false);
             fab_img.setVisibility(View.INVISIBLE);
             fab_location.setVisibility(View.INVISIBLE);
+            fab_qrcode.setVisibility(View.INVISIBLE);
             isOpen = false;
         }
     }
