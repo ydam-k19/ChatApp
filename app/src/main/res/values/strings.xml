@@ -26,6 +26,7 @@
     <string name="continue_with">Continue with</string>
     <string name="logo_app">logo app</string>
     <string name="search_name">Search name</string>
+    <string name="visit_link">Visit link</string>
     <string-array name="status">
         <item>available</item>
         <item>busy</item>
