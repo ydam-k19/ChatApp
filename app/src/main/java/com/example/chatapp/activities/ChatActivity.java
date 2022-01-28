@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.chatapp.R;
 import com.example.chatapp.adapters.ChatAdapter;
+import com.example.chatapp.augmentedfaces.AugmentedFacesActivity;
 import com.example.chatapp.databinding.ActivityChatBinding;
 import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
@@ -79,7 +80,7 @@ public class ChatActivity extends BaseActivity {
     private String lng = "";
 
 
-    FloatingActionButton fab_add, fab_img, fab_location, fab_qrcode;
+    FloatingActionButton fab_add, fab_img, fab_location, fab_qrcode,fab_filter;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean isOpen = false;
 
@@ -99,6 +100,7 @@ public class ChatActivity extends BaseActivity {
         fab_img = binding.fabImg;
         fab_location = binding.fabLocation;
         fab_qrcode = binding.fabQrcode;
+        fab_filter=binding.fabFilter;
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close);
@@ -143,6 +145,11 @@ public class ChatActivity extends BaseActivity {
             animateFab();
         });
 
+        fab_filter.setOnClickListener(view->{
+            Intent intent=new Intent(ChatActivity.this, AugmentedFacesActivity.class);
+            startActivity(intent);
+            animateFab();
+        });
 
     }
 
@@ -159,6 +166,7 @@ public class ChatActivity extends BaseActivity {
             fab_img.setVisibility(View.VISIBLE);
             fab_location.setVisibility(View.VISIBLE);
             fab_qrcode.setVisibility(View.VISIBLE);
+            fab_filter.setVisibility(View.VISIBLE);
             isOpen = true;
         } else {
             fab_add.startAnimation(rotateClose);
@@ -172,6 +180,7 @@ public class ChatActivity extends BaseActivity {
             fab_img.setVisibility(View.INVISIBLE);
             fab_location.setVisibility(View.INVISIBLE);
             fab_qrcode.setVisibility(View.INVISIBLE);
+            fab_filter.setVisibility(View.INVISIBLE);
             isOpen = false;
         }
     }
