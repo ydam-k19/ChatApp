@@ -1,5 +1,6 @@
 package com.example.chatapp.activities;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -101,20 +102,8 @@ public class FilterActivity extends AppCompatActivity {
         capture_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bm = null;
-                FrameLayout savedImage = null;
-                savedImage = (FrameLayout)findViewById(R.id.arFragment);
-
-                savedImage.setDrawingCacheEnabled(true);
-                savedImage.buildDrawingCache();
-                bm = savedImage.getDrawingCache();
-                bm=viewToBitmap(savedImage);
-                String img_filter=encodeImage(bm);
-                Log.d("Image_Filter",img_filter);
-                Intent intent=new Intent(FilterActivity.this,ChatActivity.class);
-                intent.putExtra("img_filter",img_filter);
-                setResult(RESULT_OK, intent);
-                finish();
+                Intent intent=new Intent(FilterActivity.this,Custom_CameraActivity.class);
+                startActivity(intent);
             }
         });
     }
