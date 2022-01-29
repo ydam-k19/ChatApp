@@ -9,40 +9,83 @@
     <FrameLayout
         android:id="@+id/arFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
-   <androidx.constraintlayout.widget.ConstraintLayout
-       android:layout_width="match_parent"
-       android:layout_height="50dp"
-       android:layout_gravity="bottom"
-       android:background="@color/error">
+        android:layout_height="match_parent" />
 
-       <ImageButton
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:src="@drawable/ic_capture"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:id="@+id/capture"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white">
 
-       <ImageButton
-           android:id="@+id/anonymous_filter"
-           android:layout_width="50dp"
-           android:layout_height="50dp"
-           android:layout_marginStart="50dp"
-           android:src="@drawable/mask_2"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintEnd_toStartOf="@+id/capture"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:clickable="true"/>
+        <ImageButton
+            android:id="@+id/capture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/capture_picture"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/white"/>
+
+        <ImageButton
+            android:id="@+id/anonymous_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="50dp"
+android:background="@color/white"
+            android:clickable="true"
+            android:src="@drawable/mask_40"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/capture"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/cat_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="50dp"
+
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:src="@drawable/face_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/anonymous_filter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageButton
+            android:background="@color/white"
+            android:id="@+id/fox_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="50dp"
+            android:clickable="true"
+            android:src="@drawable/fox_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/capture"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:background="@color/white"
+            android:id="@+id/canonical_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:src="@drawable/canonical_face_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fox_filter"
+
+            app:layout_constraintTop_toTopOf="parent" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
