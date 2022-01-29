@@ -39,8 +39,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class FilterActivity extends AppCompatActivity {
 
-    public  String pathModel="models/fox.glb";
-    public  String pathTextures="textures/freckles.png";
+    public  String pathModel="";
+    public  String pathTextures="";
     private  Set<CompletableFuture<?>> loaders = new HashSet<>();
 
 //    private ActivityFilterBinding binding;
@@ -55,16 +55,18 @@ public class FilterActivity extends AppCompatActivity {
 
 
     // them code
-    private ImageButton capture_img,anonymous_filter;
+    private ImageButton capture_img,anonymous_filter,fox_filter,cat_filter,canonical_filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_filter);
-        capture_img= findViewById(R.id.capture);
-        anonymous_filter=findViewById(R.id.anonymous_filter);
-//        capture_img=binding.capture;
-//        frameLayout=binding.arFragment;
+        capture_img = findViewById(R.id.capture);
+        anonymous_filter = findViewById(R.id.anonymous_filter);
+        fox_filter=findViewById(R.id.fox_filter);
+        cat_filter=findViewById(R.id.cat_filter);
+        canonical_filter=findViewById(R.id.canonical_filter);
+
 
         getSupportFragmentManager().addFragmentOnAttachListener(this::onAttachFragment);
 
@@ -85,14 +87,76 @@ public class FilterActivity extends AppCompatActivity {
 
                 loaders.clear();
 
+                for (AugmentedFace augmentedFaceNode : facesNodes.keySet()) {
+                    arSceneView.getScene().removeChild(facesNodes.get(augmentedFaceNode));
+                    facesNodes.remove(augmentedFaceNode);
+                }
+                faceTexture = null;
+                faceModel = null;
+                pathModel = "models/mask.glb";
+                pathTextures = "textures/mask_2.png";
+//                Log.d("anonymous",pathModel);
+
+                loadModels();
+                loadTextures();
+            }
+        });
+
+        fox_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loaders.clear();
+
                 for(AugmentedFace augmentedFaceNode : facesNodes.keySet()){
                     arSceneView.getScene().removeChild(facesNodes.get(augmentedFaceNode));
                     facesNodes.remove(augmentedFaceNode);
                 }
                 faceTexture=null;
                 faceModel=null;
-                pathModel="models/mask.glb";
-                pathTextures="textures/mask_2.png";
+                pathModel="models/fox.glb";
+                pathTextures="textures/freckles.png";
+//                Log.d("anonymous",pathModel);
+
+                loadModels();
+                loadTextures();
+            }
+        });
+
+        canonical_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loaders.clear();
+
+                for(AugmentedFace augmentedFaceNode : facesNodes.keySet()){
+                    arSceneView.getScene().removeChild(facesNodes.get(augmentedFaceNode));
+                    facesNodes.remove(augmentedFaceNode);
+                }
+                faceTexture=null;
+                faceModel=null;
+                pathModel="models/canonical_face.glb";
+                pathTextures="textures/canonical_face.png";
+//                Log.d("anonymous",pathModel);
+
+                loadModels();
+                loadTextures();
+            }
+        });
+        cat_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loaders.clear();
+
+                for(AugmentedFace augmentedFaceNode : facesNodes.keySet()){
+                    arSceneView.getScene().removeChild(facesNodes.get(augmentedFaceNode));
+                    facesNodes.remove(augmentedFaceNode);
+                }
+                faceTexture=null;
+                faceModel=null;
+                pathModel="models/face.glb";
+                pathTextures="textures/face.png";
 //                Log.d("anonymous",pathModel);
 
                 loadModels();
