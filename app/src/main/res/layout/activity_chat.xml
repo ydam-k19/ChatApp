@@ -215,7 +215,7 @@
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabCustomSize="@dimen/_40sdp"
-        app:layout_constraintBottom_toTopOf="@id/fab_qrcode"
+        app:layout_constraintBottom_toTopOf="@id/fab_filter"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/primary" />
 

@@ -73,6 +73,10 @@ dependencies {
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.mapbox.maps:android:10.1.0'
 
+    implementation 'com.gorisse.thomas.sceneform:sceneform:1.20.4'
+
+    implementation 'com.google.ar:core:1.29.0'
+
 
     // CameraX core library using the camera2 implementation
     def camerax_version = "1.1.0-alpha05"
