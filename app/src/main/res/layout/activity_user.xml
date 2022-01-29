@@ -37,6 +37,7 @@
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
         android:layout_marginTop="@dimen/_16sdp"
         android:textColorHint="@color/secondary_text"
         android:background="@drawable/background_search_bar"

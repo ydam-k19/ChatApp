@@ -1,6 +1,7 @@
 package com.example.chatapp.activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.addNewChat.setOnClickListener(v -> {
@@ -81,6 +85,27 @@ public class MainActivity extends BaseActivity implements ConversionListener {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        binding.searchBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (binding.searchBar.getRight() - binding.searchBar.getPaddingEnd() * 2) && event.getRawX() <= (binding.searchBar.getRight() - binding.searchBar.getPaddingEnd())) {
+                        // your action here
+                        Intent intent = new Intent(MainActivity.this, QRcodeActivity.class);
+                        startActivity(intent);
+
+
+                        return true;
+                    }
+                }
+                return false;
             }
         });
     }

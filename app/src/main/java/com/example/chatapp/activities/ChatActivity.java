@@ -79,7 +79,8 @@ public class ChatActivity extends BaseActivity {
     private String lng = "";
 
 
-    FloatingActionButton fab_add, fab_img, fab_location, fab_filter;
+    
+    FloatingActionButton fab_add, fab_img, fab_location, fab_filter,fab_camera;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean isOpen = false;
 
@@ -99,6 +100,8 @@ public class ChatActivity extends BaseActivity {
         fab_img = binding.fabImg;
         fab_location = binding.fabLocation;
         fab_filter = binding.fabFilter;
+        
+        fab_camera = binding.fabCamera;
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close);
@@ -143,6 +146,12 @@ public class ChatActivity extends BaseActivity {
             animateFab();
         });
 
+        fab_camera.setOnClickListener(view ->{
+            Intent intent = new Intent(ChatActivity.this,CameraActivity.class);
+            pickCameraImage.launch(intent);
+
+            animateFab();
+        });
 
     }
 
@@ -153,25 +162,31 @@ public class ChatActivity extends BaseActivity {
             fab_img.startAnimation(fromBottom);
             fab_location.startAnimation(fromBottom);
             fab_filter.startAnimation(fromBottom);
+            fab_camera.startAnimation(fromBottom);
             fab_img.setClickable(true);
             fab_location.setClickable(true);
             fab_filter.setClickable(true);
+            fab_camera.setClickable(true);
             fab_img.setVisibility(View.VISIBLE);
             fab_location.setVisibility(View.VISIBLE);
             fab_filter.setVisibility(View.VISIBLE);
+            fab_camera.setVisibility(View.VISIBLE);
             isOpen = true;
         } else {
             fab_add.startAnimation(rotateClose);
             fab_img.startAnimation(toBottom);
             fab_location.startAnimation(toBottom);
             fab_filter.startAnimation(toBottom);
+            fab_camera.startAnimation(toBottom);
 
             fab_img.setClickable(false);
             fab_location.setClickable(false);
             fab_filter.setClickable(false);
+            fab_camera.setClickable(false);
             fab_img.setVisibility(View.INVISIBLE);
             fab_location.setVisibility(View.INVISIBLE);
             fab_filter.setVisibility(View.INVISIBLE);
+            fab_camera.setVisibility(View.INVISIBLE);
             isOpen = false;
         }
     }
@@ -241,6 +256,31 @@ public class ChatActivity extends BaseActivity {
                 }
             }
     );
+
+
+    
+private final ActivityResultLauncher<Intent> pickCameraImage = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                if (result.getData() != null) {
+                    Uri imageUri = Uri.parse(result.getData().getExtras().getString("imageUri"));
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        encodedImage = encodeImage(bitmap); // !null
+
+
+                        binding.imagePreview.setImageBitmap(bitmap);
+                        binding.imagePreviewLayout.setVisibility(View.VISIBLE);
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+);
 
     private final ActivityResultLauncher<Intent> pickLocation = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
