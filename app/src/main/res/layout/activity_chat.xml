@@ -188,14 +188,14 @@
         app:tint="@color/primary" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_qrcode"
+        android:id="@+id/fab_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_12sdp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/adding_button_fab"
-        android:src="@drawable/ic_qr_code"
+        android:src="@drawable/ic_baseline_photo_filter_24"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabCustomSize="@dimen/_40sdp"

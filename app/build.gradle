@@ -86,4 +86,16 @@ dependencies {
 
     implementation 'com.google.mlkit:barcode-scanning:17.0.1'
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:17.0.0'
+
+    // sceneform
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation 'com.gorisse.thomas.sceneform:sceneform:1.20.4'
+
+    implementation 'com.google.ar:core:1.29.0'
 }
