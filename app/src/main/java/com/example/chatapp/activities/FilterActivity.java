@@ -93,7 +93,7 @@ public class FilterActivity extends AppCompatActivity {
                 faceModel=null;
                 pathModel="models/mask.glb";
                 pathTextures="textures/mask_2.png";
-                Log.d("anonymous",pathModel);
+//                Log.d("anonymous",pathModel);
 
                 loadModels();
                 loadTextures();
@@ -159,8 +159,7 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void loadModels() {
-        Log.d("loadModel","VO ROI");
-//        Log.d("Face model",faceModel.toString());
+
         loaders.add(ModelRenderable.builder()
                 .setSource(this, Uri.parse(pathModel))
 
@@ -175,8 +174,7 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void loadTextures() {
-        Log.d("Textures","VO ROI");
-//        Log.d("Face texture",faceTexture.toString());
+
         loaders.add(Texture.builder()
                 .setSource(this, Uri.parse(pathTextures))
                 .setUsage(Texture.Usage.COLOR_MAP)
@@ -212,9 +210,7 @@ public class FilterActivity extends AppCompatActivity {
 
                     facesNodes.put(augmentedFace, faceNode);
                 }
-                else{
-                    Log.d("Testing","HIHIHIH");
-                }
+
 
                 break;
             case STOPPED:
