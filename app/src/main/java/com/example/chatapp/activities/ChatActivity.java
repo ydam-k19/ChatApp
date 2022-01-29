@@ -246,8 +246,11 @@ public class ChatActivity extends BaseActivity {
 
                         try {
                             encodedImage = result.getData().getStringExtra("img_filter");
-//                            binding.imagePreview.setImageBitmap(bitmap);
-//                            binding.imagePreviewLayout.setVisibility(View.VISIBLE);
+
+                            Bitmap bitmap = getBitmapFromEncodedString(encodedImage);
+
+                            binding.imagePreview.setImageBitmap(bitmap);
+                            binding.imagePreviewLayout.setVisibility(View.VISIBLE);
 
                         } catch (Exception e) {
                             e.printStackTrace();
