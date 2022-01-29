@@ -13,6 +13,9 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         minSdkVersion 24
+
+        renderscriptTargetApi 24
+        renderscriptSupportModeEnabled true
     }
 
     buildTypes {
@@ -72,18 +75,28 @@ dependencies {
 
 
     // CameraX core library using the camera2 implementation
-    def camerax_version = "1.0.2"
+    def camerax_version = "1.1.0-alpha05"
     // The following line is optional, as the core library is included indirectly by camera-camera2
-    implementation "androidx.camera:camera-core:1.1.0-alpha12"
-    implementation "androidx.camera:camera-camera2:1.1.0-alpha12"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
     // If you want to additionally use the CameraX Lifecycle library
     implementation "androidx.camera:camera-lifecycle:1.1.0-alpha12"
-    // If you want to additionally use the CameraX View class
+//    // If you want to additionally use the CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha32"
-    // If you want to additionally use the CameraX Extensions library
+//    // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:1.0.0-alpha32"
 
 
     implementation 'com.google.mlkit:barcode-scanning:17.0.1'
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:17.0.0'
+
+//    edit photo
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation files('libs\\ds-photo-editor-sdk-v10.aar')
+
 }

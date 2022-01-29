@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.example.chatapp.R;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
@@ -25,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.Image;
-import android.os.Bundle;
 import android.util.Size;
 
 import com.google.android.gms.tasks.OnCompleteListener;
