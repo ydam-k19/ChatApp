@@ -18,26 +18,26 @@
         android:background="@color/white">
 
         <ImageButton
-            android:id="@+id/capture"
+            android:id="@+id/capture_imgbtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:backgroundTint="@color/white"
             android:src="@drawable/capture_picture"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="@color/white"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/anonymous_filter"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="50dp"
-android:background="@color/white"
+            android:background="@color/white"
             android:clickable="true"
             android:src="@drawable/mask_40"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/capture"
+            app:layout_constraintEnd_toStartOf="@+id/capture_imgbtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,23 +58,23 @@ android:background="@color/white"
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
-            android:background="@color/white"
             android:id="@+id/fox_filter"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="50dp"
+            android:background="@color/white"
             android:clickable="true"
             android:src="@drawable/fox_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/capture"
+            app:layout_constraintStart_toEndOf="@+id/capture_imgbtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:background="@color/white"
             android:id="@+id/canonical_filter"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@color/white"
             android:clickable="true"
             android:src="@drawable/canonical_face_icon"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,6 @@ android:background="@color/white"
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </FrameLayout>
