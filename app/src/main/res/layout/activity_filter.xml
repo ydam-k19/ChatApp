@@ -13,25 +13,37 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
         android:layout_gravity="bottom"
         android:background="@color/white">
 
+<!--        <ImageButton-->
+<!--            android:id="@+id/capture_imgbtn"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:src="@drawable/capture_picture"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
         <ImageButton
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
             android:id="@+id/capture_imgbtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/capture_picture"
+            android:background="@drawable/camera_btn_background"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_camera_2"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/_6sdp"
+            app:tint="@color/white" />
         <ImageButton
             android:id="@+id/anonymous_filter"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="50dp"
             android:background="@color/white"
             android:clickable="true"
@@ -43,10 +55,9 @@
 
         <ImageButton
             android:id="@+id/cat_filter"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="50dp"
-
             android:layout_marginEnd="20dp"
             android:clickable="true"
             android:src="@drawable/face_icon"
@@ -54,13 +65,12 @@
             app:layout_constraintEnd_toStartOf="@+id/anonymous_filter"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageButton
             android:id="@+id/fox_filter"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_marginEnd="50dp"
             android:background="@color/white"
             android:clickable="true"
@@ -72,8 +82,8 @@
 
         <ImageButton
             android:id="@+id/canonical_filter"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:background="@color/white"
             android:clickable="true"
             android:src="@drawable/canonical_face_icon"

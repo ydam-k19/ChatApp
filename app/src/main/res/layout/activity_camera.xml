@@ -26,7 +26,7 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:src="@drawable/ic_camera"
         android:scaleType="fitCenter"
-        android:padding="@dimen/_18sdp"
+        android:padding="@dimen/_16sdp"
         app:tint="@color/white" />
 
     <ImageButton
